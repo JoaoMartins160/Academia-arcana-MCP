@@ -374,14 +374,35 @@ export class FoundryClient {
 
   async disconnect(): Promise<void> {
     if (this.socket) {
-      this.socket.disconnect();
+      try {
+        this.socket.disconnect();
+      } catch (err) {
+        logger.error("Error disconnecting socket:", err);
+      }
       this.socket = null;
     }
-    if (this.companionServer) {
-      this.companionServer.close();
-      this.companionServer = null;
+
+    for (const [_, req] of this.pendingCompanionRequests.entries()) {
+      clearTimeout(req.timeout);
+      req.reject(new Error("FoundryClient is disconnecting"));
+    }
+    this.pendingCompanionRequests.clear();
+
+    for (const ws of this.companionSockets) {
+      try {
+        ws.close();
+      } catch {}
     }
     this.companionSockets.clear();
+
+    if (this.companionServer) {
+      try {
+        this.companionServer.close();
+      } catch (err) {
+        logger.error("Error closing companion server:", err);
+      }
+      this.companionServer = null;
+    }
 
     this.worldData = null;
     this._isConnected = false;

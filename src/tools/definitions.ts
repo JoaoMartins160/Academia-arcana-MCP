@@ -30,7 +30,7 @@ export const diceTools = [
   {
     name: "roll_daggerheart",
     description:
-      "Rolls Hope and Fear dice (2d12) for the Daggerheart system, adding a modifier. Returns the total and whether the outcome was a Success/Failure with Hope or Fear.",
+      "RECOMMENDED FOR DAGGERHEART ROLLS: Rolls Hope and Fear dice (2d12) for the Daggerheart system, adding a modifier. Returns the total and whether the outcome was a Success/Failure with Hope or Fear.",
     inputSchema: {
       type: "object",
       properties: {
@@ -154,9 +154,9 @@ export const actorMutationTools = [
     },
   },
   {
-    name: "create_adversary",
+    name: "generate_adversary",
     description:
-      "Generates a Daggerheart adversary with stats, damage thresholds, and features in a single operation. Requires FOUNDRY_WRITE_ENABLED=true and an active Socket.IO connection.",
+      "CRITICAL GENERATION TOOL: Generates a complete Daggerheart adversary (NPC/Monster) actor with stats, attack, damage thresholds, and features based on system benchmarks. Use this tool when creating NPCs/monsters for Daggerheart.",
     inputSchema: {
       type: "object",
       properties: {
@@ -288,7 +288,7 @@ export const compendiumTools = [
   {
     name: "search_compendium",
     description:
-      "Search FoundryVTT compendium packs by name and metadata. Searches all enabled compendiums by default; the compendiumId filter scopes to one pack.",
+      "CRITICAL LOOKUP TOOL: Search FoundryVTT compendium packs by name and metadata. Always use this to search official compendium items, spells, or features before attempting custom creations.",
     inputSchema: {
       type: "object",
       properties: {
