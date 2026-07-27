@@ -12,21 +12,21 @@ import { logger } from "../../utils/logger.js";
  * @param fn - Async function containing the handler logic
  */
 export async function withToolError<T>(
-	toolName: string,
-	fn: () => Promise<T>,
+  toolName: string,
+  fn: () => Promise<T>,
 ): Promise<T> {
-	try {
-		return await fn();
-	} catch (error) {
-		if (error instanceof McpError) {
-			throw error;
-		}
-		logger.error(`Failed to ${toolName}:`, error);
-		throw new McpError(
-			ErrorCode.InternalError,
-			`Failed to ${toolName}: ${error instanceof Error ? error.message : "Unknown error"}`,
-		);
-	}
+  try {
+    return await fn();
+  } catch (error) {
+    if (error instanceof McpError) {
+      throw error;
+    }
+    logger.error(`Failed to ${toolName}:`, error);
+    throw new McpError(
+      ErrorCode.InternalError,
+      `Failed to ${toolName}: ${error instanceof Error ? error.message : "Unknown error"}`,
+    );
+  }
 }
 
 /**
@@ -39,28 +39,28 @@ export async function withToolError<T>(
  * @returns The resolved folder ID or undefined if not found/provided
  */
 export function resolveFolderId(
-	foundryClient: any, // using any to avoid circular/deep typing issues here if needed, or we can use FoundryClient
-	folderNameOrId?: string,
-	type?: string,
+  foundryClient: any, // using any to avoid circular/deep typing issues here if needed, or we can use FoundryClient
+  folderNameOrId?: string,
+  type?: string,
 ): string | undefined {
-	if (!folderNameOrId) return undefined;
+  if (!folderNameOrId) return undefined;
 
-	const folders = foundryClient.getFolders();
+  const folders = foundryClient.getFolders();
 
-	// Try exact ID match first
-	const byId = folders.find(
-		(f: any) => f._id === folderNameOrId && (!type || f.type === type),
-	);
-	if (byId) return byId._id;
+  // Try exact ID match first
+  const byId = folders.find(
+    (f: any) => f._id === folderNameOrId && (!type || f.type === type),
+  );
+  if (byId) return byId._id;
 
-	// Try case-insensitive name match
-	const lowerName = folderNameOrId.toLowerCase();
-	const byName = folders.find(
-		(f: any) =>
-			f.name?.toLowerCase() === lowerName && (!type || f.type === type),
-	);
-	if (byName) return byName._id;
+  // Try case-insensitive name match
+  const lowerName = folderNameOrId.toLowerCase();
+  const byName = folders.find(
+    (f: any) =>
+      f.name?.toLowerCase() === lowerName && (!type || f.type === type),
+  );
+  if (byName) return byName._id;
 
-	// Fallback: return what was passed, Foundry will reject it if invalid
-	return folderNameOrId;
+  // Fallback: return what was passed, Foundry will reject it if invalid
+  return folderNameOrId;
 }

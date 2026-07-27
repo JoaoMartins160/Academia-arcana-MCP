@@ -11,21 +11,21 @@ import { withToolError } from "../utils.js";
  * Handles scene information requests
  */
 export async function handleGetSceneInfo(
-	args: {
-		sceneId?: string;
-	},
-	foundryClient: FoundryClient,
+  args: {
+    sceneId?: string;
+  },
+  foundryClient: FoundryClient,
 ) {
-	const { sceneId } = args;
+  const { sceneId } = args;
 
-	return withToolError("get scene info", async () => {
-		const scene = await foundryClient.getCurrentScene(sceneId);
+  return withToolError("get scene info", async () => {
+    const scene = await foundryClient.getCurrentScene(sceneId);
 
-		return {
-			content: [
-				{
-					type: "text",
-					text: `🗺️ **Scene Information**
+    return {
+      content: [
+        {
+          type: "text",
+          text: `🗺️ **Scene Information**
 **Name:** ${scene.name}
 **ID:** ${scene._id}
 **Active:** ${scene.active ? "Yes" : "No"}
@@ -36,8 +36,8 @@ export async function handleGetSceneInfo(
 **Darkness Level:** ${scene.darkness * 100}%
 
 **Description:** ${scene.description || "No description available."}`,
-				},
-			],
-		};
-	});
+        },
+      ],
+    };
+  });
 }

@@ -16,9 +16,9 @@ import { logger } from "../utils/logger.js";
  * Tool execution context containing all necessary dependencies
  */
 export interface ToolContext {
-	foundryClient: FoundryClient;
-	diagnosticsClient?: DiagnosticsClient;
-	diagnosticSystem?: DiagnosticSystem;
+  foundryClient: FoundryClient;
+  diagnosticsClient?: DiagnosticsClient;
+  diagnosticSystem?: DiagnosticSystem;
 }
 
 /**
@@ -27,132 +27,132 @@ export interface ToolContext {
  * while still enforcing the required content array structure.
  */
 export interface ToolResult {
-	content: Array<{
-		type: string;
-		text?: string;
-		data?: string;
-		mimeType?: string;
-		[key: string]: unknown;
-	}>;
-	isError?: boolean;
+  content: Array<{
+    type: string;
+    text?: string;
+    data?: string;
+    mimeType?: string;
+    [key: string]: unknown;
+  }>;
+  isError?: boolean;
 }
 
 /**
  * Base interface for all tools
  */
 export interface Tool {
-	/** Tool name (must match schema name) */
-	readonly name: string;
+  /** Tool name (must match schema name) */
+  readonly name: string;
 
-	/** Tool description */
-	readonly description: string;
+  /** Tool description */
+  readonly description: string;
 
-	/** JSON Schema for input validation */
-	readonly inputSchema: object;
+  /** JSON Schema for input validation */
+  readonly inputSchema: object;
 
-	/**
-	 * Execute the tool with validated arguments
-	 * @param args - Validated input arguments
-	 * @param context - Tool execution context
-	 * @returns Tool execution result
-	 */
-	execute(
-		args: Record<string, unknown>,
-		context: ToolContext,
-	): Promise<ToolResult>;
+  /**
+   * Execute the tool with validated arguments
+   * @param args - Validated input arguments
+   * @param context - Tool execution context
+   * @returns Tool execution result
+   */
+  execute(
+    args: Record<string, unknown>,
+    context: ToolContext,
+  ): Promise<ToolResult>;
 }
 
 /**
  * Base tool class with automatic validation
  */
 export abstract class BaseTool implements Tool {
-	private static readonly ajv = new Ajv({
-		allErrors: true,
-		verbose: true,
-		strict: true,
-	});
+  private static readonly ajv = new Ajv({
+    allErrors: true,
+    verbose: true,
+    strict: true,
+  });
 
-	abstract readonly name: string;
-	abstract readonly description: string;
-	abstract readonly inputSchema: object;
+  abstract readonly name: string;
+  abstract readonly description: string;
+  abstract readonly inputSchema: object;
 
-	/**
-	 * Execute the tool with automatic validation
-	 */
-	async execute(
-		args: Record<string, unknown>,
-		context: ToolContext,
-	): Promise<ToolResult> {
-		logger.debug(`Executing tool: ${this.name}`, { args });
+  /**
+   * Execute the tool with automatic validation
+   */
+  async execute(
+    args: Record<string, unknown>,
+    context: ToolContext,
+  ): Promise<ToolResult> {
+    logger.debug(`Executing tool: ${this.name}`, { args });
 
-		// Validate input arguments against schema
-		this.validateArgs(args);
+    // Validate input arguments against schema
+    this.validateArgs(args);
 
-		try {
-			return await this.executeValidated(args, context);
-		} catch (error) {
-			logger.error(`Tool execution failed: ${this.name}`, error);
+    try {
+      return await this.executeValidated(args, context);
+    } catch (error) {
+      logger.error(`Tool execution failed: ${this.name}`, error);
 
-			if (error instanceof McpError) {
-				throw error;
-			}
+      if (error instanceof McpError) {
+        throw error;
+      }
 
-			throw new McpError(
-				ErrorCode.InternalError,
-				`Tool execution failed: ${error instanceof Error ? error.message : "Unknown error"}`,
-			);
-		}
-	}
+      throw new McpError(
+        ErrorCode.InternalError,
+        `Tool execution failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
+  }
 
-	/**
-	 * Execute the tool with validated arguments (must be implemented by subclasses)
-	 */
-	protected abstract executeValidated(
-		args: Record<string, unknown>,
-		context: ToolContext,
-	): Promise<ToolResult>;
+  /**
+   * Execute the tool with validated arguments (must be implemented by subclasses)
+   */
+  protected abstract executeValidated(
+    args: Record<string, unknown>,
+    context: ToolContext,
+  ): Promise<ToolResult>;
 
-	/**
-	 * Validate arguments against the tool's schema
-	 */
-	private validateArgs(args: Record<string, unknown>): void {
-		const validate = BaseTool.ajv.compile(this.inputSchema);
-		const valid = validate(args);
+  /**
+   * Validate arguments against the tool's schema
+   */
+  private validateArgs(args: Record<string, unknown>): void {
+    const validate = BaseTool.ajv.compile(this.inputSchema);
+    const valid = validate(args);
 
-		if (!valid) {
-			const errors =
-				validate.errors
-					?.map((err) => {
-						const instancePath = err.instancePath || "root";
-						return `${instancePath}: ${err.message}`;
-					})
-					.join(", ") || "Unknown validation error";
+    if (!valid) {
+      const errors =
+        validate.errors
+          ?.map((err) => {
+            const instancePath = err.instancePath || "root";
+            return `${instancePath}: ${err.message}`;
+          })
+          .join(", ") || "Unknown validation error";
 
-			throw new McpError(
-				ErrorCode.InvalidParams,
-				`Invalid parameters for tool '${this.name}': ${errors}`,
-			);
-		}
-	}
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        `Invalid parameters for tool '${this.name}': ${errors}`,
+      );
+    }
+  }
 
-	/**
-	 * Helper method to create a text response
-	 */
-	protected createTextResponse(text: string): ToolResult {
-		return {
-			content: [
-				{
-					type: "text",
-					text,
-				},
-			],
-		};
-	}
+  /**
+   * Helper method to create a text response
+   */
+  protected createTextResponse(text: string): ToolResult {
+    return {
+      content: [
+        {
+          type: "text",
+          text,
+        },
+      ],
+    };
+  }
 
-	/**
-	 * Helper method to create an error response
-	 */
-	protected createErrorResponse(error: Error): ToolResult {
-		return this.createTextResponse(`❌ **Error**: ${error.message}`);
-	}
+  /**
+   * Helper method to create an error response
+   */
+  protected createErrorResponse(error: Error): ToolResult {
+    return this.createTextResponse(`❌ **Error**: ${error.message}`);
+  }
 }

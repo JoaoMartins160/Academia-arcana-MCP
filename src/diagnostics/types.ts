@@ -26,16 +26,16 @@ import { z } from "zod";
  * ```
  */
 export interface LogEntry {
-	/** ISO timestamp when the log entry was created */
-	timestamp: string;
-	/** Log level indicating severity */
-	level: "log" | "warn" | "error" | "info" | "notification";
-	/** The actual log message content */
-	message: string;
-	/** Optional stack trace for errors */
-	stack?: string;
-	/** Source component that generated the log */
-	source: "foundry" | "module" | "system" | "api" | "unknown";
+  /** ISO timestamp when the log entry was created */
+  timestamp: string;
+  /** Log level indicating severity */
+  level: "log" | "warn" | "error" | "info" | "notification";
+  /** The actual log message content */
+  message: string;
+  /** Optional stack trace for errors */
+  stack?: string;
+  /** Source component that generated the log */
+  source: "foundry" | "module" | "system" | "api" | "unknown";
 }
 
 /**
@@ -44,14 +44,14 @@ export interface LogEntry {
  * @interface ServerInfo
  */
 export interface ServerInfo {
-	/** FoundryVTT version string */
-	foundryVersion: string;
-	/** Game system version */
-	systemVersion: string;
-	/** Current world identifier */
-	worldId: string;
-	/** Server uptime in seconds (if available) */
-	uptime?: number;
+  /** FoundryVTT version string */
+  foundryVersion: string;
+  /** Game system version */
+  systemVersion: string;
+  /** Current world identifier */
+  worldId: string;
+  /** Server uptime in seconds (if available) */
+  uptime?: number;
 }
 
 /**
@@ -60,12 +60,12 @@ export interface ServerInfo {
  * @interface UserInfo
  */
 export interface UserInfo {
-	/** Total number of users */
-	total: number;
-	/** Number of currently active users */
-	active: number;
-	/** Number of GM users */
-	gm: number;
+  /** Total number of users */
+  total: number;
+  /** Number of currently active users */
+  active: number;
+  /** Number of GM users */
+  gm: number;
 }
 
 /**
@@ -74,10 +74,10 @@ export interface UserInfo {
  * @interface ModuleInfo
  */
 export interface ModuleInfo {
-	/** Total number of installed modules */
-	total: number;
-	/** Number of currently active modules */
-	active: number;
+  /** Total number of installed modules */
+  total: number;
+  /** Number of currently active modules */
+  active: number;
 }
 
 /**
@@ -86,10 +86,10 @@ export interface ModuleInfo {
  * @interface PerformanceInfo
  */
 export interface PerformanceInfo {
-	/** Node.js memory usage (if available) */
-	memory?: NodeJS.MemoryUsage;
-	/** Number of connected WebSocket clients */
-	connectedClients: number;
+  /** Node.js memory usage (if available) */
+  memory?: NodeJS.MemoryUsage;
+  /** Number of connected WebSocket clients */
+  connectedClients: number;
 }
 
 /**
@@ -98,14 +98,14 @@ export interface PerformanceInfo {
  * @interface LogInfo
  */
 export interface LogInfo {
-	/** Current number of entries in the log buffer */
-	bufferSize: number;
-	/** Number of recent error entries */
-	recentErrors: number;
-	/** Number of recent warning entries */
-	recentWarnings: number;
-	/** Error rate as a percentage */
-	errorRate: number;
+  /** Current number of entries in the log buffer */
+  bufferSize: number;
+  /** Number of recent error entries */
+  recentErrors: number;
+  /** Number of recent warning entries */
+  recentWarnings: number;
+  /** Error rate as a percentage */
+  errorRate: number;
 }
 
 /**
@@ -126,20 +126,20 @@ export interface LogInfo {
  * ```
  */
 export interface SystemHealth {
-	/** Timestamp when health data was collected */
-	timestamp: string;
-	/** Server information and versions */
-	server: ServerInfo;
-	/** User session information */
-	users: UserInfo;
-	/** Module information */
-	modules: ModuleInfo;
-	/** Performance metrics */
-	performance: PerformanceInfo;
-	/** Log statistics */
-	logs: LogInfo;
-	/** Overall health status */
-	status: "healthy" | "warning" | "critical";
+  /** Timestamp when health data was collected */
+  timestamp: string;
+  /** Server information and versions */
+  server: ServerInfo;
+  /** User session information */
+  users: UserInfo;
+  /** Module information */
+  modules: ModuleInfo;
+  /** Performance metrics */
+  performance: PerformanceInfo;
+  /** Log statistics */
+  logs: LogInfo;
+  /** Overall health status */
+  status: "healthy" | "warning" | "critical";
 }
 
 /**
@@ -148,7 +148,7 @@ export interface SystemHealth {
  * @interface ErrorCategories
  */
 export interface ErrorCategories {
-	[category: string]: number;
+  [category: string]: number;
 }
 
 /**
@@ -157,12 +157,12 @@ export interface ErrorCategories {
  * @interface DiagnosticSuggestion
  */
 export interface DiagnosticSuggestion {
-	/** Error category this suggestion applies to */
-	category: string;
-	/** Human-readable suggestion text */
-	suggestion: string;
-	/** Priority level for addressing the issue */
-	priority: "low" | "medium" | "high" | "critical";
+  /** Error category this suggestion applies to */
+  category: string;
+  /** Human-readable suggestion text */
+  suggestion: string;
+  /** Priority level for addressing the issue */
+  priority: "low" | "medium" | "high" | "critical";
 }
 
 /**
@@ -171,12 +171,12 @@ export interface DiagnosticSuggestion {
  * @interface ErrorSummary
  */
 export interface ErrorSummary {
-	/** Total number of errors in the analyzed timeframe */
-	totalErrors: number;
-	/** Number of unique error messages */
-	uniqueErrors: number;
-	/** Categorized error counts */
-	categories: ErrorCategories;
+  /** Total number of errors in the analyzed timeframe */
+  totalErrors: number;
+  /** Number of unique error messages */
+  uniqueErrors: number;
+  /** Categorized error counts */
+  categories: ErrorCategories;
 }
 
 /**
@@ -200,18 +200,18 @@ export interface ErrorSummary {
  * ```
  */
 export interface ErrorDiagnosis {
-	/** Timestamp of the diagnosis */
-	timestamp: string;
-	/** Time window analyzed for errors */
-	timeframe: string;
-	/** Summary of errors found */
-	summary: ErrorSummary;
-	/** Most recent error entries */
-	recentErrors: LogEntry[];
-	/** Diagnostic suggestions based on error patterns */
-	suggestions: DiagnosticSuggestion[];
-	/** Overall health score (0-100) */
-	healthScore: number;
+  /** Timestamp of the diagnosis */
+  timestamp: string;
+  /** Time window analyzed for errors */
+  timeframe: string;
+  /** Summary of errors found */
+  summary: ErrorSummary;
+  /** Most recent error entries */
+  recentErrors: LogEntry[];
+  /** Diagnostic suggestions based on error patterns */
+  suggestions: DiagnosticSuggestion[];
+  /** Overall health score (0-100) */
+  healthScore: number;
 }
 
 /**
@@ -220,16 +220,16 @@ export interface ErrorDiagnosis {
  * @interface LogSearchParams
  */
 export interface LogSearchParams {
-	/** Number of log lines to retrieve */
-	lines?: number;
-	/** Filter by specific log level */
-	level?: LogEntry["level"];
-	/** Filter logs since this timestamp */
-	since?: string;
-	/** Filter by log source */
-	source?: LogEntry["source"];
-	/** Include stack traces in results */
-	includeStack?: boolean;
+  /** Number of log lines to retrieve */
+  lines?: number;
+  /** Filter by specific log level */
+  level?: LogEntry["level"];
+  /** Filter logs since this timestamp */
+  since?: string;
+  /** Filter by log source */
+  source?: LogEntry["source"];
+  /** Include stack traces in results */
+  includeStack?: boolean;
 }
 
 /**
@@ -238,14 +238,14 @@ export interface LogSearchParams {
  * @interface LogPatternSearchParams
  */
 export interface LogPatternSearchParams {
-	/** Regular expression pattern to search for */
-	pattern: string;
-	/** Time window in seconds to search within */
-	timeframe?: string;
-	/** Filter by specific log level */
-	level?: LogEntry["level"];
-	/** Case-sensitive search */
-	caseSensitive?: boolean;
+  /** Regular expression pattern to search for */
+  pattern: string;
+  /** Time window in seconds to search within */
+  timeframe?: string;
+  /** Filter by specific log level */
+  level?: LogEntry["level"];
+  /** Case-sensitive search */
+  caseSensitive?: boolean;
 }
 
 /**
@@ -254,14 +254,14 @@ export interface LogPatternSearchParams {
  * @interface LogResponse
  */
 export interface LogResponse {
-	/** Array of log entries */
-	logs: LogEntry[];
-	/** Total number of log entries returned */
-	total: number;
-	/** Current size of the log buffer */
-	bufferSize?: number;
-	/** Maximum size of the log buffer */
-	maxBufferSize?: number;
+  /** Array of log entries */
+  logs: LogEntry[];
+  /** Total number of log entries returned */
+  total: number;
+  /** Current size of the log buffer */
+  bufferSize?: number;
+  /** Maximum size of the log buffer */
+  maxBufferSize?: number;
 }
 
 /**
@@ -270,109 +270,109 @@ export interface LogResponse {
  * @interface LogSearchResponse
  */
 export interface LogSearchResponse {
-	/** Array of matching log entries */
-	logs: LogEntry[];
-	/** Number of matches found */
-	matches: number;
-	/** Search pattern used */
-	pattern: string;
-	/** Timeframe searched */
-	searchTimeframe: string;
+  /** Array of matching log entries */
+  logs: LogEntry[];
+  /** Number of matches found */
+  matches: number;
+  /** Search pattern used */
+  pattern: string;
+  /** Timeframe searched */
+  searchTimeframe: string;
 }
 
 export const LogEntrySchema = z.object({
-	timestamp: z.string(),
-	level: z.enum(["log", "warn", "error", "info", "notification"]),
-	message: z.string(),
-	stack: z.string().optional(),
-	source: z.enum(["foundry", "module", "system", "api", "unknown"]),
+  timestamp: z.string(),
+  level: z.enum(["log", "warn", "error", "info", "notification"]),
+  message: z.string(),
+  stack: z.string().optional(),
+  source: z.enum(["foundry", "module", "system", "api", "unknown"]),
 });
 
 export const LogResponseSchema = z.object({
-	logs: z.array(LogEntrySchema),
-	total: z.number(),
-	bufferSize: z.number().optional(),
-	maxBufferSize: z.number().optional(),
+  logs: z.array(LogEntrySchema),
+  total: z.number(),
+  bufferSize: z.number().optional(),
+  maxBufferSize: z.number().optional(),
 });
 
 export const LogSearchResponseSchema = z.object({
-	logs: z.array(LogEntrySchema),
-	matches: z.number(),
-	pattern: z.string(),
-	searchTimeframe: z.string(),
+  logs: z.array(LogEntrySchema),
+  matches: z.number(),
+  pattern: z.string(),
+  searchTimeframe: z.string(),
 });
 
 const ServerInfoSchema = z.object({
-	foundryVersion: z.string(),
-	systemVersion: z.string(),
-	worldId: z.string(),
-	uptime: z.number().optional(),
+  foundryVersion: z.string(),
+  systemVersion: z.string(),
+  worldId: z.string(),
+  uptime: z.number().optional(),
 });
 
 const UserInfoSchema = z.object({
-	total: z.number(),
-	active: z.number(),
-	gm: z.number(),
+  total: z.number(),
+  active: z.number(),
+  gm: z.number(),
 });
 
 const ModuleInfoSchema = z.object({
-	total: z.number(),
-	active: z.number(),
+  total: z.number(),
+  active: z.number(),
 });
 
 const PerformanceInfoSchema = z.object({
-	memory: z
-		.object({
-			rss: z.number(),
-			heapTotal: z.number(),
-			heapUsed: z.number(),
-			external: z.number(),
-			arrayBuffers: z.number(),
-		})
-		.optional(),
-	connectedClients: z.number(),
+  memory: z
+    .object({
+      rss: z.number(),
+      heapTotal: z.number(),
+      heapUsed: z.number(),
+      external: z.number(),
+      arrayBuffers: z.number(),
+    })
+    .optional(),
+  connectedClients: z.number(),
 });
 
 const LogInfoSchema = z.object({
-	bufferSize: z.number(),
-	recentErrors: z.number(),
-	recentWarnings: z.number(),
-	errorRate: z.number(),
+  bufferSize: z.number(),
+  recentErrors: z.number(),
+  recentWarnings: z.number(),
+  errorRate: z.number(),
 });
 
 export const SystemHealthSchema = z.object({
-	timestamp: z.string(),
-	server: ServerInfoSchema,
-	users: UserInfoSchema,
-	modules: ModuleInfoSchema,
-	performance: PerformanceInfoSchema,
-	logs: LogInfoSchema,
-	status: z.enum(["healthy", "warning", "critical"]),
+  timestamp: z.string(),
+  server: ServerInfoSchema,
+  users: UserInfoSchema,
+  modules: ModuleInfoSchema,
+  performance: PerformanceInfoSchema,
+  logs: LogInfoSchema,
+  status: z.enum(["healthy", "warning", "critical"]),
 });
 
 const ErrorCategoriesSchema = z.record(z.string(), z.number());
 
 const DiagnosticSuggestionSchema = z.object({
-	category: z.string(),
-	suggestion: z.string(),
-	priority: z.enum(["low", "medium", "high", "critical"]),
+  category: z.string(),
+  suggestion: z.string(),
+  priority: z.enum(["low", "medium", "high", "critical"]),
 });
 
 const ErrorSummarySchema = z.object({
-	totalErrors: z.number(),
-	uniqueErrors: z.number(),
-	categories: ErrorCategoriesSchema,
+  totalErrors: z.number(),
+  uniqueErrors: z.number(),
+  categories: ErrorCategoriesSchema,
 });
 
 export const ErrorDiagnosisSchema = z.object({
-	timestamp: z.string(),
-	timeframe: z.string(),
-	summary: ErrorSummarySchema,
-	recentErrors: z.array(LogEntrySchema),
-	suggestions: z.array(DiagnosticSuggestionSchema),
-	healthScore: z.number(),
+  timestamp: z.string(),
+  timeframe: z.string(),
+  summary: ErrorSummarySchema,
+  recentErrors: z.array(LogEntrySchema),
+  suggestions: z.array(DiagnosticSuggestionSchema),
+  healthScore: z.number(),
 });
 
 export const ApiStatusResponseSchema = z.object({
-	status: z.string(),
+  status: z.string(),
 });

@@ -21,57 +21,57 @@ dotenv.config({ quiet: true });
  * including server settings, FoundryVTT connection details, and caching options.
  */
 const ConfigSchema = z.object({
-	serverName: z.string().default("foundryvtt-mcp"),
-	serverVersion: z.string().default("0.1.0"),
-	logLevel: z.enum(["debug", "info", "warn", "error"]).default("info"),
-	nodeEnv: z.enum(["development", "production", "test"]).default("development"),
+  serverName: z.string().default("foundryvtt-mcp"),
+  serverVersion: z.string().default("0.1.0"),
+  logLevel: z.enum(["debug", "info", "warn", "error"]).default("info"),
+  nodeEnv: z.enum(["development", "production", "test"]).default("development"),
 
-	foundry: z.object({
-		url: z
-			.string()
-			.url(
-				"Invalid FoundryVTT URL - must include protocol (http:// or https://)",
-			)
-			.refine((url) => {
-				try {
-					const parsed = new URL(url);
-					return parsed.protocol === "http:" || parsed.protocol === "https:";
-				} catch {
-					return false;
-				}
-			}, "URL must use http:// or https:// protocol")
-			.refine((url) => {
-				try {
-					const parsed = new URL(url);
-					// Warning for localhost in production
-					if (
-						process.env.NODE_ENV === "production" &&
-						(parsed.hostname === "localhost" || parsed.hostname === "127.0.0.1")
-					) {
-						console.warn(
-							"⚠️  Warning: Using localhost URL in production environment",
-						);
-					}
-					return true;
-				} catch {
-					return false;
-				}
-			}, "URL validation failed"),
-		username: z.string().optional(),
-		password: z.string().optional(),
-		userId: z.string().optional(),
-		socketPath: z.string().default("/socket.io/"),
-		timeout: z.number().default(10000),
-		retryAttempts: z.number().default(3),
-		retryDelay: z.number().default(1000),
-		writeEnabled: z.boolean().default(false),
-	}),
+  foundry: z.object({
+    url: z
+      .string()
+      .url(
+        "Invalid FoundryVTT URL - must include protocol (http:// or https://)",
+      )
+      .refine((url) => {
+        try {
+          const parsed = new URL(url);
+          return parsed.protocol === "http:" || parsed.protocol === "https:";
+        } catch {
+          return false;
+        }
+      }, "URL must use http:// or https:// protocol")
+      .refine((url) => {
+        try {
+          const parsed = new URL(url);
+          // Warning for localhost in production
+          if (
+            process.env.NODE_ENV === "production" &&
+            (parsed.hostname === "localhost" || parsed.hostname === "127.0.0.1")
+          ) {
+            console.warn(
+              "⚠️  Warning: Using localhost URL in production environment",
+            );
+          }
+          return true;
+        } catch {
+          return false;
+        }
+      }, "URL validation failed"),
+    username: z.string().optional(),
+    password: z.string().optional(),
+    userId: z.string().optional(),
+    socketPath: z.string().default("/socket.io/"),
+    timeout: z.number().default(10000),
+    retryAttempts: z.number().default(3),
+    retryDelay: z.number().default(1000),
+    writeEnabled: z.boolean().default(false),
+  }),
 
-	cache: z.object({
-		enabled: z.boolean().default(true),
-		ttlSeconds: z.number().default(300), // 5 minutes
-		maxSize: z.number().default(1000),
-	}),
+  cache: z.object({
+    enabled: z.boolean().default(true),
+    ttlSeconds: z.number().default(300), // 5 minutes
+    maxSize: z.number().default(1000),
+  }),
 });
 
 /**
@@ -99,80 +99,80 @@ type Config = z.infer<typeof ConfigSchema>;
  * ```
  */
 function loadConfig(): Config {
-	const rawConfig = {
-		serverName: process.env.MCP_SERVER_NAME,
-		serverVersion: process.env.MCP_SERVER_VERSION,
-		logLevel: process.env.LOG_LEVEL,
-		nodeEnv: process.env.NODE_ENV,
+  const rawConfig = {
+    serverName: process.env.MCP_SERVER_NAME,
+    serverVersion: process.env.MCP_SERVER_VERSION,
+    logLevel: process.env.LOG_LEVEL,
+    nodeEnv: process.env.NODE_ENV,
 
-		foundry: {
-			url: process.env.FOUNDRY_URL,
-			username: process.env.FOUNDRY_USERNAME,
-			password: process.env.FOUNDRY_PASSWORD,
-			userId: process.env.FOUNDRY_USER_ID,
-			socketPath: process.env.FOUNDRY_SOCKET_PATH,
-			timeout: process.env.FOUNDRY_TIMEOUT
-				? Number.parseInt(process.env.FOUNDRY_TIMEOUT, 10)
-				: undefined,
-			retryAttempts: process.env.FOUNDRY_RETRY_ATTEMPTS
-				? Number.parseInt(process.env.FOUNDRY_RETRY_ATTEMPTS, 10)
-				: undefined,
-			retryDelay: process.env.FOUNDRY_RETRY_DELAY
-				? Number.parseInt(process.env.FOUNDRY_RETRY_DELAY, 10)
-				: undefined,
-			writeEnabled:
-				process.env.FOUNDRY_WRITE_ENABLED !== undefined
-					? process.env.FOUNDRY_WRITE_ENABLED === "true"
-					: undefined,
-		},
+    foundry: {
+      url: process.env.FOUNDRY_URL,
+      username: process.env.FOUNDRY_USERNAME,
+      password: process.env.FOUNDRY_PASSWORD,
+      userId: process.env.FOUNDRY_USER_ID,
+      socketPath: process.env.FOUNDRY_SOCKET_PATH,
+      timeout: process.env.FOUNDRY_TIMEOUT
+        ? Number.parseInt(process.env.FOUNDRY_TIMEOUT, 10)
+        : undefined,
+      retryAttempts: process.env.FOUNDRY_RETRY_ATTEMPTS
+        ? Number.parseInt(process.env.FOUNDRY_RETRY_ATTEMPTS, 10)
+        : undefined,
+      retryDelay: process.env.FOUNDRY_RETRY_DELAY
+        ? Number.parseInt(process.env.FOUNDRY_RETRY_DELAY, 10)
+        : undefined,
+      writeEnabled:
+        process.env.FOUNDRY_WRITE_ENABLED !== undefined
+          ? process.env.FOUNDRY_WRITE_ENABLED === "true"
+          : undefined,
+    },
 
-		cache: {
-			enabled:
-				process.env.CACHE_ENABLED !== undefined
-					? process.env.CACHE_ENABLED === "true"
-					: undefined,
-			ttlSeconds: process.env.CACHE_TTL_SECONDS
-				? Number.parseInt(process.env.CACHE_TTL_SECONDS, 10)
-				: undefined,
-			maxSize: process.env.CACHE_MAX_SIZE
-				? Number.parseInt(process.env.CACHE_MAX_SIZE, 10)
-				: undefined,
-		},
-	};
+    cache: {
+      enabled:
+        process.env.CACHE_ENABLED !== undefined
+          ? process.env.CACHE_ENABLED === "true"
+          : undefined,
+      ttlSeconds: process.env.CACHE_TTL_SECONDS
+        ? Number.parseInt(process.env.CACHE_TTL_SECONDS, 10)
+        : undefined,
+      maxSize: process.env.CACHE_MAX_SIZE
+        ? Number.parseInt(process.env.CACHE_MAX_SIZE, 10)
+        : undefined,
+    },
+  };
 
-	try {
-		return ConfigSchema.parse(rawConfig);
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			console.error("❌ Configuration validation failed:");
-			error.issues.forEach((err) => {
-				console.error(`  ${err.path.join(".")}: ${err.message}`);
+  try {
+    return ConfigSchema.parse(rawConfig);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.error("❌ Configuration validation failed:");
+      error.issues.forEach((err) => {
+        console.error(`  ${err.path.join(".")}: ${err.message}`);
 
-				// Provide specific guidance for common URL errors
-				if (err.path.includes("url")) {
-					console.error("  💡 URL Examples:");
-					console.error("     • Local: http://localhost:30000");
-					console.error("     • Reverse Proxy: https://foundry.example.com");
-					console.error("     • Network IP: http://192.168.1.100:30000");
-					console.error("     • Custom Port: https://foundry.example.com:8443");
-				}
-			});
-			console.error("\n📋 Configuration Help:");
-			console.error("  • Check your environment variables and .env file");
-			console.error(
-				"  • Ensure FOUNDRY_URL includes protocol (http:// or https://)",
-			);
-			console.error("  • For setup guidance, see: SETUP_GUIDE.md");
-			console.error("  • Run the setup wizard: npm run setup");
-		}
+        // Provide specific guidance for common URL errors
+        if (err.path.includes("url")) {
+          console.error("  💡 URL Examples:");
+          console.error("     • Local: http://localhost:30000");
+          console.error("     • Reverse Proxy: https://foundry.example.com");
+          console.error("     • Network IP: http://192.168.1.100:30000");
+          console.error("     • Custom Port: https://foundry.example.com:8443");
+        }
+      });
+      console.error("\n📋 Configuration Help:");
+      console.error("  • Check your environment variables and .env file");
+      console.error(
+        "  • Ensure FOUNDRY_URL includes protocol (http:// or https://)",
+      );
+      console.error("  • For setup guidance, see: SETUP_GUIDE.md");
+      console.error("  • Run the setup wizard: npm run setup");
+    }
 
-		// In test environment, throw error instead of exiting process
-		if (process.env.NODE_ENV === "test") {
-			throw error;
-		}
+    // In test environment, throw error instead of exiting process
+    if (process.env.NODE_ENV === "test") {
+      throw error;
+    }
 
-		process.exit(1);
-	}
+    process.exit(1);
+  }
 }
 
 /**
@@ -196,12 +196,12 @@ let _config: Config | null = null;
  * ```
  */
 export const config = new Proxy({} as Config, {
-	get(_target, prop) {
-		if (_config === null) {
-			_config = loadConfig();
-		}
-		return _config[prop as keyof Config];
-	},
+  get(_target, prop) {
+    if (_config === null) {
+      _config = loadConfig();
+    }
+    return _config[prop as keyof Config];
+  },
 });
 
 /**
@@ -209,7 +209,7 @@ export const config = new Proxy({} as Config, {
  * @internal
  */
 export function resetConfig(): void {
-	_config = null;
+  _config = null;
 }
 
 /**
