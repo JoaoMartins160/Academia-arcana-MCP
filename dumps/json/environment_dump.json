@@ -1,0 +1,135 @@
+{
+  "name": "Maré Sanguínea",
+  "type": "environment",
+  "_id": "wP2lgza5XmO8BqXe",
+  "img": "systems/daggerheart/assets/icons/documents/actors/forest.svg",
+  "system": {
+    "attribution": {},
+    "description": "",
+    "tier": 3,
+    "difficulty": 19,
+    "potentialAdversaries": {
+      "uCK5QYygHXbvYz8k": {
+        "label": "Malzeno Lair",
+        "adversaries": [
+          "Actor.JTscxt0TgxoGTTWr"
+        ]
+      }
+    },
+    "notes": "",
+    "impulses": "",
+    "type": "event"
+  },
+  "prototypeToken": {
+    "name": "Maré Sanguínea",
+    "displayName": 0,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "depth": 1,
+    "texture": {
+      "src": "systems/daggerheart/assets/icons/documents/actors/forest.svg",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": -1,
+    "displayBars": 0,
+    "bar1": {
+      "attribute": "resources.hitPoints"
+    },
+    "bar2": {
+      "attribute": "resources.stress"
+    },
+    "light": {
+      "negative": false,
+      "priority": 0,
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "sight": {
+      "enabled": false,
+      "range": 0,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": {},
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null,
+    "flags": {},
+    "randomImg": false,
+    "appendNumber": false,
+    "prependAdjective": false
+  },
+  "items": [],
+  "effects": [],
+  "folder": "YupwHTqHs2mSCApi",
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "JwMcSTSk4FTf1B5p": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "daggerheart",
+    "systemVersion": "2.3.4",
+    "createdTime": 1782002761429,
+    "modifiedTime": 1782002818616,
+    "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

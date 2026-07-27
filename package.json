@@ -1,0 +1,95 @@
+{
+  "name": "Academia-arcana-MCP",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for FoundryVTT integration",
+  "main": "src/index.ts",
+  "bin": {
+    "Academia-arcana-MCP": "src/index.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "smoke": "node scripts/smoke-test.js",
+    "smoke:pack": "node scripts/smoke-pack.js",
+    "test": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:watch": "vitest --watch --config vitest.integration.config.ts",
+    "test:integration:ui": "vitest --ui --config vitest.integration.config.ts",
+    "test-connection": "tsx scripts/test-connection.ts",
+    "setup-wizard": "tsx scripts/setup-wizard.ts",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "format": "biome format --write src",
+    "docs:check": "typedoc --emit none",
+    "docs": "typedoc src/index.ts --out docs --exclude '**/*.test.ts'",
+    "docs:serve": "npm run docs && npx http-server docs",
+    "setup": "npm run test-connection",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "foundry",
+    "vtt",
+    "mcp",
+    "ai",
+    "tabletop",
+    "rpg"
+  ],
+  "author": "Joao Pedro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoaoMartins160/Academia-Arcana-MCP.git"
+  },
+  "homepage": "https://github.com/JoaoMartins160/Academia-Arcana-MCP#readme",
+  "bugs": {
+    "url": "https://github.com/JoaoMartins160/Academia-Arcana-MCP/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src/**/*.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.5.0",
+    "ajv": "^8.17.1",
+    "axios": "^1.7.9",
+    "classic-level": "^3.0.0",
+    "dotenv": "^16.4.7",
+    "nanoid": "^5.0.9",
+    "socket.io-client": "^4.8.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.2",
+    "@types/ws": "^8.5.13",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.2",
+    "typedoc": "^0.27.6",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,jsx,json,css,md}": [
+      "biome format --write"
+    ]
+  }
+}
