@@ -1,0 +1,998 @@
+{
+  "name": "Adult Flickerfly",
+  "img": "modules/art-for-daggerheart/adversaries/portraits/Adult Flickerfly.webp",
+  "type": "adversary",
+  "folder": "sSnuhJr7YQ4ap7VO",
+  "system": {
+    "difficulty": 17,
+    "damageThresholds": {
+      "major": 20,
+      "severe": 35
+    },
+    "resources": {
+      "hitPoints": {
+        "value": 0,
+        "max": 12
+      },
+      "stress": {
+        "value": 0,
+        "max": 6
+      }
+    },
+    "motivesAndTactics": "Collect shiny things, hunt, nest, swoop",
+    "resistance": {
+      "physical": {
+        "resistance": false,
+        "immunity": false,
+        "reduction": 0
+      },
+      "magical": {
+        "resistance": false,
+        "immunity": false,
+        "reduction": 0
+      }
+    },
+    "type": "solo",
+    "notes": "",
+    "hordeHp": 1,
+    "experiences": {},
+    "bonuses": {
+      "roll": {
+        "attack": {
+          "bonus": 0,
+          "dice": []
+        },
+        "action": {
+          "bonus": 0,
+          "dice": []
+        },
+        "reaction": {
+          "bonus": 0,
+          "dice": []
+        }
+      },
+      "damage": {
+        "physical": {
+          "bonus": 0,
+          "dice": []
+        },
+        "magical": {
+          "bonus": 0,
+          "dice": []
+        }
+      }
+    },
+    "tier": 3,
+    "description": "<p>A winged insect the size of a large house with iridescent scales and wings that move too fast to track.</p>",
+    "attack": {
+      "name": "Wing Slash",
+      "img": "icons/commodities/biological/wing-insect-blue.webp",
+      "roll": {
+        "bonus": 3,
+        "type": "attack",
+        "trait": null,
+        "difficulty": null,
+        "advState": "neutral",
+        "diceRolling": {
+          "multiplier": "prof",
+          "flatMultiplier": 1,
+          "dice": "d6",
+          "compare": null,
+          "treshold": null
+        },
+        "useDefault": false
+      },
+      "range": "veryClose",
+      "damage": {
+        "parts": {
+          "hitPoints": {
+            "value": {
+              "custom": {
+                "enabled": false,
+                "formula": ""
+              },
+              "flatMultiplier": 3,
+              "dice": "d20",
+              "bonus": null,
+              "multiplier": "flat"
+            },
+            "applyTo": "hitPoints",
+            "type": [
+              "physical"
+            ],
+            "resultBased": false,
+            "valueAlt": {
+              "multiplier": "prof",
+              "flatMultiplier": 1,
+              "dice": "d6",
+              "bonus": null,
+              "custom": {
+                "enabled": false,
+                "formula": ""
+              }
+            },
+            "base": false
+          }
+        },
+        "includeBase": false,
+        "direct": false
+      },
+      "type": "attack",
+      "chatDisplay": false,
+      "_id": "sxnpq5HSdDzj9HaX",
+      "systemPath": "actions",
+      "baseAction": false,
+      "description": "",
+      "originItem": {
+        "type": "itemCollection"
+      },
+      "actionType": "action",
+      "triggers": [],
+      "cost": [],
+      "uses": {
+        "value": null,
+        "max": null,
+        "recovery": null,
+        "consumeOnSuccess": false
+      },
+      "target": {
+        "type": "any",
+        "amount": null
+      },
+      "effects": [],
+      "save": {
+        "trait": null,
+        "difficulty": null,
+        "damageMod": "none"
+      }
+    },
+    "attribution": {
+      "source": "Daggerheart SRD",
+      "page": 91,
+      "artist": ""
+    },
+    "size": "gargantuan",
+    "advantageSources": [],
+    "disadvantageSources": [],
+    "criticalThreshold": 20,
+    "rules": {
+      "conditionImmunities": {
+        "hidden": false,
+        "restrained": false,
+        "vulnerable": false
+      },
+      "damageReduction": {
+        "thresholdImmunities": {
+          "minor": false
+        },
+        "reduceSeverity": {
+          "magical": 0,
+          "physical": 0
+        }
+      },
+      "attack": {
+        "damage": {
+          "hpDamageMultiplier": 1,
+          "hpDamageTakenMultiplier": 1
+        }
+      }
+    }
+  },
+  "flags": {
+    "core": {
+      "sheetClass": "daggerheart.SleekAdversarySheet"
+    }
+  },
+  "_id": "G7jiltRjgvVhZewm",
+  "prototypeToken": {
+    "name": "Adult Flickerfly",
+    "displayName": 0,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "texture": {
+      "src": "modules/art-for-daggerheart/adversaries/tokens/Adult%20Flickerfly*.webp",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": -1,
+    "displayBars": 0,
+    "bar1": {
+      "attribute": "resources.hitPoints"
+    },
+    "bar2": {
+      "attribute": "resources.stress"
+    },
+    "light": {
+      "negative": false,
+      "priority": 0,
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "sight": {
+      "enabled": false,
+      "range": 0,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": {},
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": true,
+      "colors": {
+        "ring": "#8f0000",
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 0.8,
+        "texture": null
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null,
+    "flags": {},
+    "randomImg": true,
+    "appendNumber": false,
+    "prependAdjective": false,
+    "depth": 1
+  },
+  "items": [
+    {
+      "name": "Relentless (4)",
+      "type": "feature",
+      "system": {
+        "description": "<p>The @Lookup[@name] can be spotlighted up to four times per GM turn. Spend Fear as usual to spotlight them.</p>",
+        "resource": null,
+        "actions": {
+          "poUhJdSkhjiVL2Vp": {
+            "type": "effect",
+            "_id": "poUhJdSkhjiVL2Vp",
+            "systemPath": "actions",
+            "description": "",
+            "chatDisplay": true,
+            "actionType": "passive",
+            "cost": [
+              {
+                "scalable": false,
+                "key": "fear",
+                "value": 1,
+                "step": null,
+                "consumeOnSuccess": false,
+                "itemId": null
+              }
+            ],
+            "uses": {
+              "value": 0,
+              "max": "3",
+              "recovery": null,
+              "consumeOnSuccess": false
+            },
+            "effects": [],
+            "target": {
+              "type": "any",
+              "amount": null
+            },
+            "name": "Spotlight: Relentless",
+            "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+            "range": "",
+            "baseAction": false,
+            "originItem": {
+              "type": "itemCollection"
+            },
+            "triggers": []
+          }
+        },
+        "originItemType": null,
+        "attribution": {},
+        "multiclassOrigin": false,
+        "featureForm": "passive"
+      },
+      "_id": "fFOhhMl4SDUnYNNO",
+      "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 100000,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "coreVersion": "14.360",
+        "systemId": "daggerheart",
+        "systemVersion": "2.1.2",
+        "createdTime": 1776917526214,
+        "modifiedTime": 1776917526214,
+        "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "name": "Never Misses",
+      "type": "feature",
+      "system": {
+        "description": "<p>When the @Lookup[@name] makes an attack, the target’s Evasion is halved against the attack.</p>",
+        "resource": null,
+        "actions": {
+          "VRGPnDhDpReXUZZF": {
+            "type": "effect",
+            "_id": "VRGPnDhDpReXUZZF",
+            "systemPath": "actions",
+            "description": "",
+            "chatDisplay": true,
+            "actionType": "passive",
+            "cost": [],
+            "uses": {
+              "value": null,
+              "max": "",
+              "recovery": null,
+              "consumeOnSuccess": false
+            },
+            "effects": [
+              {
+                "_id": "ia0NUIOxE3RHb45P",
+                "onSave": false
+              }
+            ],
+            "target": {
+              "type": "any",
+              "amount": null
+            },
+            "name": "Halve Evasion",
+            "img": "icons/skills/targeting/crosshair-mark-rough-pink.webp",
+            "range": "",
+            "baseAction": false,
+            "originItem": {
+              "type": "itemCollection"
+            },
+            "triggers": []
+          }
+        },
+        "originItemType": null,
+        "attribution": {},
+        "multiclassOrigin": false,
+        "featureForm": "passive"
+      },
+      "_id": "PrwC6RpsP12fPUwy",
+      "img": "icons/skills/targeting/crosshair-mark-rough-pink.webp",
+      "effects": [
+        {
+          "name": "Never Misses",
+          "img": "icons/skills/targeting/crosshair-mark-rough-pink.webp",
+          "origin": "Compendium.daggerheart.adversaries.Actor.G7jiltRjgvVhZewm.Item.PrwC6RpsP12fPUwy",
+          "transfer": false,
+          "_id": "ia0NUIOxE3RHb45P",
+          "type": "base",
+          "system": {
+            "rangeDependence": {
+              "enabled": false,
+              "type": "withinRange",
+              "target": "hostile",
+              "range": "melee"
+            },
+            "changes": [
+              {
+                "key": "system.evasion",
+                "value": "@system.evasion / 2",
+                "priority": 10,
+                "type": "override",
+                "phase": "initial"
+              }
+            ],
+            "duration": {
+              "description": ""
+            },
+            "stacking": null
+          },
+          "disabled": false,
+          "duration": {
+            "value": null,
+            "units": "seconds",
+            "expiry": null,
+            "expired": false
+          },
+          "description": "<p>When the Flickerfl y makes an attack, the target’s Evasion is halved against the attack.</p>",
+          "tint": "#ffffff",
+          "statuses": [],
+          "sort": 0,
+          "flags": {},
+          "_stats": {
+            "compendiumSource": null,
+            "coreVersion": "14.360",
+            "systemId": "daggerheart",
+            "systemVersion": "2.1.2",
+            "createdTime": 1776917526214,
+            "modifiedTime": 1776917526214,
+            "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+            "duplicateSource": null,
+            "exportSource": null
+          },
+          "start": null,
+          "showIcon": 1,
+          "folder": null
+        }
+      ],
+      "folder": null,
+      "sort": 200000,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "coreVersion": "14.360",
+        "systemId": "daggerheart",
+        "systemVersion": "2.1.2",
+        "createdTime": 1776917526214,
+        "modifiedTime": 1776917526214,
+        "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "name": "Whirlwind",
+      "type": "feature",
+      "system": {
+        "description": "<p><strong>Spend a Fear</strong> to whirl, making an attack against all targets within Very Close range. Targets the @Lookup[@name] succeeds against take <strong>3d8</strong> direct physical damage.</p><p>@Template[type:emanation|range:vc]</p>",
+        "resource": null,
+        "actions": {
+          "RV1wKufKrMPN6MOo": {
+            "type": "attack",
+            "_id": "RV1wKufKrMPN6MOo",
+            "systemPath": "actions",
+            "description": "",
+            "chatDisplay": true,
+            "actionType": "action",
+            "cost": [
+              {
+                "scalable": false,
+                "key": "fear",
+                "value": 1,
+                "step": null,
+                "itemId": null,
+                "consumeOnSuccess": false
+              }
+            ],
+            "uses": {
+              "value": null,
+              "max": "",
+              "recovery": null,
+              "consumeOnSuccess": false
+            },
+            "damage": {
+              "parts": {
+                "hitPoints": {
+                  "value": {
+                    "custom": {
+                      "enabled": false,
+                      "formula": ""
+                    },
+                    "flatMultiplier": 3,
+                    "dice": "d8",
+                    "bonus": null,
+                    "multiplier": "flat"
+                  },
+                  "applyTo": "hitPoints",
+                  "type": [
+                    "physical"
+                  ],
+                  "base": false,
+                  "resultBased": false,
+                  "valueAlt": {
+                    "multiplier": "prof",
+                    "flatMultiplier": 1,
+                    "dice": "d6",
+                    "bonus": null,
+                    "custom": {
+                      "enabled": false,
+                      "formula": ""
+                    }
+                  }
+                }
+              },
+              "includeBase": false,
+              "direct": true
+            },
+            "target": {
+              "type": "any",
+              "amount": null
+            },
+            "effects": [],
+            "roll": {
+              "type": "attack",
+              "trait": null,
+              "difficulty": null,
+              "bonus": null,
+              "advState": "neutral",
+              "diceRolling": {
+                "multiplier": "prof",
+                "flatMultiplier": 1,
+                "dice": "d6",
+                "compare": null,
+                "treshold": null
+              },
+              "useDefault": false
+            },
+            "save": {
+              "trait": null,
+              "difficulty": null,
+              "damageMod": "none"
+            },
+            "name": "Attack",
+            "img": "icons/skills/melee/strike-slashes-orange.webp",
+            "range": "veryClose",
+            "baseAction": false,
+            "originItem": {
+              "type": "itemCollection"
+            },
+            "triggers": []
+          }
+        },
+        "originItemType": null,
+        "featureForm": "action",
+        "attribution": {},
+        "multiclassOrigin": false
+      },
+      "_id": "BuL6ndgaiJtjaM2T",
+      "img": "icons/skills/melee/strike-slashes-orange.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 300000,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "coreVersion": "14.360",
+        "systemId": "daggerheart",
+        "systemVersion": "2.1.2",
+        "createdTime": 1776917526214,
+        "modifiedTime": 1776917526214,
+        "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "name": "Mind Dance",
+      "type": "feature",
+      "system": {
+        "description": "<p><strong>Mark a Stress</strong> to create a magically dazzling display that grapples the minds of nearby foes. All targets within Close range must make an Instinct Reaction Roll. For each target who failed, you gain a Fear and the @Lookup[@name] learns one of the target’s fears.</p><p>@Template[type:emanation|range:c]</p>",
+        "resource": null,
+        "actions": {
+          "GNwsDlCabx3fiG4g": {
+            "type": "attack",
+            "_id": "GNwsDlCabx3fiG4g",
+            "systemPath": "actions",
+            "description": "",
+            "chatDisplay": true,
+            "actionType": "action",
+            "cost": [
+              {
+                "scalable": false,
+                "key": "stress",
+                "value": 1,
+                "step": null,
+                "itemId": null,
+                "consumeOnSuccess": false
+              }
+            ],
+            "uses": {
+              "value": null,
+              "max": "",
+              "recovery": null,
+              "consumeOnSuccess": false
+            },
+            "damage": {
+              "parts": {},
+              "includeBase": false,
+              "direct": false
+            },
+            "target": {
+              "type": "any",
+              "amount": null
+            },
+            "effects": [],
+            "roll": {
+              "type": null,
+              "trait": null,
+              "difficulty": null,
+              "bonus": null,
+              "advState": "neutral",
+              "diceRolling": {
+                "multiplier": "prof",
+                "flatMultiplier": 1,
+                "dice": "d6",
+                "compare": null,
+                "treshold": null
+              },
+              "useDefault": false
+            },
+            "save": {
+              "trait": "instinct",
+              "difficulty": null,
+              "damageMod": "none"
+            },
+            "name": "Roll Save",
+            "img": "icons/magic/light/explosion-glow-spiral-yellow.webp",
+            "range": "close",
+            "baseAction": false,
+            "originItem": {
+              "type": "itemCollection"
+            },
+            "triggers": []
+          }
+        },
+        "originItemType": null,
+        "featureForm": "action",
+        "attribution": {},
+        "multiclassOrigin": false
+      },
+      "_id": "bOTsfXr9yNIGkIzK",
+      "img": "icons/magic/light/explosion-glow-spiral-yellow.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 400000,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "coreVersion": "14.360",
+        "systemId": "daggerheart",
+        "systemVersion": "2.1.2",
+        "createdTime": 1776917526214,
+        "modifiedTime": 1776917526214,
+        "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "name": "Hallucinatory Breath",
+      "type": "feature",
+      "system": {
+        "description": "<p><em>Countdown (Loop 1d6)</em>. When the @Lookup[@name] takes damage for the first time, activate the countdown. When it triggers, the @Lookup[@name] breathes hallucinatory gas on all targets in front of them up to Far range. Targets must make an Instinct Reaction Roll or be tormented by fearful hallucinations. Targets whose fears are known to the @Lookup[@name] have disadvantage on this roll. Targets who fail lose 2 Hope and take <strong>3d8+3</strong> direct magic damage.</p><p>@Template[type:inFront|range:f]</p>",
+        "resource": null,
+        "actions": {
+          "YOyKyKGTUEWkMmJe": {
+            "type": "attack",
+            "_id": "YOyKyKGTUEWkMmJe",
+            "systemPath": "actions",
+            "description": "<p>The @Lookup[@name] breathes hallucinatory gas on all targets in front of them up to Far range. Targets must make an Instinct Reaction Roll or be tormented by fearful hallucinations. Targets whose fears are known to the @Lookup[@name] have disadvantage on this roll. Targets who fail lose 2 Hope and take <strong>3d8+3</strong> direct magic damage.</p><p>@Template[type:inFront|range:f]</p>",
+            "chatDisplay": true,
+            "actionType": "action",
+            "cost": [],
+            "uses": {
+              "value": null,
+              "max": "",
+              "recovery": null,
+              "consumeOnSuccess": false
+            },
+            "damage": {
+              "parts": {
+                "hitPoints": {
+                  "value": {
+                    "custom": {
+                      "enabled": false,
+                      "formula": ""
+                    },
+                    "flatMultiplier": 3,
+                    "dice": "d8",
+                    "bonus": 3,
+                    "multiplier": "flat"
+                  },
+                  "applyTo": "hitPoints",
+                  "type": [
+                    "magical"
+                  ],
+                  "base": false,
+                  "resultBased": false,
+                  "valueAlt": {
+                    "multiplier": "prof",
+                    "flatMultiplier": 1,
+                    "dice": "d6",
+                    "bonus": null,
+                    "custom": {
+                      "enabled": false,
+                      "formula": ""
+                    }
+                  }
+                },
+                "hope": {
+                  "value": {
+                    "custom": {
+                      "enabled": true,
+                      "formula": "2"
+                    },
+                    "multiplier": "flat",
+                    "flatMultiplier": 1,
+                    "dice": "d6",
+                    "bonus": null
+                  },
+                  "applyTo": "hope",
+                  "base": false,
+                  "resultBased": false,
+                  "valueAlt": {
+                    "multiplier": "prof",
+                    "flatMultiplier": 1,
+                    "dice": "d6",
+                    "bonus": null,
+                    "custom": {
+                      "enabled": false,
+                      "formula": ""
+                    }
+                  },
+                  "type": []
+                }
+              },
+              "includeBase": false,
+              "direct": false
+            },
+            "target": {
+              "type": "any",
+              "amount": null
+            },
+            "effects": [],
+            "roll": {
+              "type": null,
+              "trait": null,
+              "difficulty": null,
+              "bonus": null,
+              "advState": "neutral",
+              "diceRolling": {
+                "multiplier": "prof",
+                "flatMultiplier": 1,
+                "dice": "d6",
+                "compare": null,
+                "treshold": null
+              },
+              "useDefault": false
+            },
+            "save": {
+              "trait": "instinct",
+              "difficulty": null,
+              "damageMod": "none"
+            },
+            "name": "Roll Save",
+            "img": "icons/magic/air/fog-gas-smoke-purple.webp",
+            "range": "far",
+            "baseAction": false,
+            "originItem": {
+              "type": "itemCollection"
+            },
+            "triggers": []
+          },
+          "lBhmLc33pcXzJHT3": {
+            "type": "countdown",
+            "_id": "lBhmLc33pcXzJHT3",
+            "systemPath": "actions",
+            "description": "<p><em>Countdown (Loop 1d6)</em>. When the @Lookup[@name] takes damage for the first time, activate the countdown.</p>",
+            "chatDisplay": true,
+            "originItem": {
+              "type": "itemCollection"
+            },
+            "actionType": "action",
+            "cost": [],
+            "uses": {
+              "value": null,
+              "max": "",
+              "recovery": null,
+              "consumeOnSuccess": false
+            },
+            "countdown": [
+              {
+                "name": "Hallucinatory Breath",
+                "type": "encounter",
+                "defaultOwnership": -1,
+                "img": "icons/magic/air/fog-gas-smoke-purple.webp",
+                "progress": {
+                  "looping": "looping",
+                  "type": "actionRoll",
+                  "start": 1,
+                  "startFormula": "1d6",
+                  "current": 1
+                },
+                "ownership": {}
+              }
+            ],
+            "name": "Start Countdown",
+            "img": "icons/magic/air/fog-gas-smoke-purple.webp",
+            "range": "",
+            "baseAction": false,
+            "triggers": []
+          }
+        },
+        "originItemType": null,
+        "featureForm": "reaction",
+        "attribution": {},
+        "multiclassOrigin": false
+      },
+      "_id": "49cIxZRFiAM6jDva",
+      "img": "icons/magic/air/fog-gas-smoke-purple.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 500000,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "coreVersion": "14.360",
+        "systemId": "daggerheart",
+        "systemVersion": "2.1.2",
+        "createdTime": 1776917526214,
+        "modifiedTime": 1776917526214,
+        "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "name": "Uncanny Reflexes",
+      "type": "feature",
+      "system": {
+        "description": "<p>When the @Lookup[@name] takes damage from an attack within Close range, you can mark a Stress to take half damage.</p>",
+        "resource": null,
+        "actions": {
+          "FocbilGTpvUjlb7m": {
+            "type": "effect",
+            "_id": "FocbilGTpvUjlb7m",
+            "systemPath": "actions",
+            "description": "",
+            "chatDisplay": true,
+            "actionType": "reaction",
+            "cost": [
+              {
+                "scalable": false,
+                "key": "stress",
+                "value": 1,
+                "step": null,
+                "itemId": null,
+                "consumeOnSuccess": false
+              }
+            ],
+            "uses": {
+              "value": null,
+              "max": "",
+              "recovery": null,
+              "consumeOnSuccess": false
+            },
+            "effects": [],
+            "target": {
+              "type": "self",
+              "amount": null
+            },
+            "name": "Mark Stress",
+            "img": "icons/skills/movement/arrow-upward-yellow.webp",
+            "range": "",
+            "baseAction": false,
+            "originItem": {
+              "type": "itemCollection"
+            },
+            "triggers": []
+          }
+        },
+        "originItemType": null,
+        "featureForm": "reaction",
+        "attribution": {},
+        "multiclassOrigin": false
+      },
+      "_id": "KLdLRKoJHBJlHwYe",
+      "img": "icons/skills/movement/arrow-upward-yellow.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 600000,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "coreVersion": "14.360",
+        "systemId": "daggerheart",
+        "systemVersion": "2.1.2",
+        "createdTime": 1776917526214,
+        "modifiedTime": 1776917526214,
+        "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "name": "Deadly Flight",
+      "type": "feature",
+      "system": {
+        "description": "<p>While flying the @Lookup[@name] can move up to Far range instead of Close range before taking an action.</p>",
+        "resource": null,
+        "actions": {},
+        "originItemType": null,
+        "multiclassOrigin": false,
+        "attribution": {},
+        "featureForm": "passive"
+      },
+      "_id": "WFRpSDZvqF0Upjoy",
+      "img": "icons/skills/movement/feet-winged-boots-blue.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 700000,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "coreVersion": "14.360",
+        "systemId": "daggerheart",
+        "systemVersion": "2.1.2",
+        "createdTime": 1776917526214,
+        "modifiedTime": 1776917526214,
+        "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      }
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "14.360",
+    "systemId": "daggerheart",
+    "systemVersion": "2.1.2",
+    "createdTime": 1776917526214,
+    "modifiedTime": 1777086041649,
+    "lastModifiedBy": "JwMcSTSk4FTf1B5p",
+    "compendiumSource": "Compendium.daggerheart.adversaries.Actor.G7jiltRjgvVhZewm",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JwMcSTSk4FTf1B5p": 3
+  },
+  "sort": 0
+}
