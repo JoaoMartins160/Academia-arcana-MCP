@@ -24,6 +24,24 @@ Servidor **Model Context Protocol (MCP)** avançado para integração local e di
 
 ---
 
+## 🔌 Módulos do Foundry VTT (Integração & Downloads)
+
+Para obter a experiência completa de comunicação e busca de compêndios entre a IA e o Foundry VTT, o ecossistema utiliza dois módulos dedicados no Foundry VTT:
+
+### 1. 🌉 Foundry MCP Bridge (Módulo de Conexão WebSocket)
+- **Pacote Oficial**: [Foundry MCP Bridge no FoundryVTT Package Directory](https://foundryvtt.com/packages/foundry-mcp-bridge)
+- **Função**: Módulo de infraestrutura para abrir a comunicação nativa Socket.IO e WebSocket do Foundry VTT com o servidor MCP, permitindo a leitura e gravação de documentos no jogo em tempo real.
+- **Instalação**: No Foundry VTT, acesse **Add-on Modules** → **Install Module** → Busque por `Foundry MCP Bridge` ou cole a URL do manifesto.
+
+### 2. ⚡ Foundry MCP Companion (`foundryvtt-mcp-companion`)
+- **Repositório & Download**: [Foundry MCP Companion no GitHub](https://github.com/JoaoMartins160/foundryvtt-mcp-companion)
+- **Função**: Módulo complementar oficial do **Academia-arcana-MCP** que habilita:
+  - **RPC de Compêndios em Tempo Real**: Buscas ultrarrápidas de itens, magias e regras direto no compêndio do cliente.
+  - **Painel de Configurações no Jogo**: Configuração de porta WebSocket, reconexão automática e logs no menu **Game Settings** do Foundry VTT.
+  - **Indicador Visual de Status**: Botão de status interativo no menu de controles da cena indicando se o servidor MCP está conectado (`fas fa-plug-circle-bolt`).
+
+---
+
 ## 🏗️ Arquitetura do Projeto (Clean Architecture por Sistema)
 
 O projeto organiza as ferramentas de MCP dividindo rigorosamente as capacidades nativas do Foundry VTT das regras específicas de cada sistema de RPG:
@@ -31,8 +49,8 @@ O projeto organiza as ferramentas de MCP dividindo rigorosamente as capacidades 
 ```mermaid
 graph TD
     MCP["AI Assistant / MCP Client"] --> Router["Central Router<br/>(src/tools/router.ts)"]
-    Router -->|name.startsWith('daggerheart_')| DHRouter["Daggerheart Router<br/>(src/systems/daggerheart/tools/daggerheart_router.ts)"]
-    Router -->|Ferramentas Nativas Core| CoreHandlers["Foundry Core Handlers<br/>(src/tools/handlers/)"]
+    Router -->|"Prefixo daggerheart_ "| DHRouter["Daggerheart Router<br/>(src/systems/daggerheart/tools/daggerheart_router.ts)"]
+    Router -->|"Ferramentas Nativas Core"| CoreHandlers["Foundry Core Handlers<br/>(src/tools/handlers/)"]
     DHRouter --> DHHandlers["Daggerheart Handlers<br/>(src/systems/daggerheart/tools/handlers/)"]
     DHHandlers --> FoundryClient["Foundry Client<br/>(WebSocket / Socket.IO)"]
     CoreHandlers --> FoundryClient
@@ -69,12 +87,12 @@ O servidor MCP suporta a execução de **Grafos de Ações Encadeadas (Action Gr
 
 ```mermaid
 graph TD
-    A["Cliente MCP / IA"] -->|Request: daggerheart_execute_action_graph| B["Action Graph Engine"]
-    B --> Node1["Nó 1: create_character<br/>(Cria personagem 'Theron')"]
-    Node1 -->|Retorna actorId: pc101| State["Estado Compartilhado (Variable Context)"]
-    State -->|Injeta {{step1.actorId}}| Node2["Nó 2: add_domain_card<br/>(Equipa carta 'Arcana Mastery')"]
+    A["Cliente MCP / IA"] -->|"Request: daggerheart_execute_action_graph"| B["Action Graph Engine"]
+    B --> Node1["Nó 1: create_character<br/>(Cria personagem Theron)"]
+    Node1 -->|"Retorna actorId: pc101"| State["Estado Compartilhado (Variable Context)"]
+    State -->|"Injeta variavel step1.actorId"| Node2["Nó 2: add_domain_card<br/>(Equipa carta Arcana Mastery)"]
     Node2 --> State
-    State -->|Injeta {{step1.actorId}}| Node3["Nó 3: init_resources<br/>(Define Hope: 2, Stress: 0)"]
+    State -->|"Injeta variavel step1.actorId"| Node3["Nó 3: init_resources<br/>(Define Hope: 2, Stress: 0)"]
     Node3 --> Res["Resultado MCP Consolidado"]
 ```
 
@@ -83,7 +101,7 @@ graph TD
 ```mermaid
 graph TD
     Init["Início Pipeline Setup"] --> Step1["1. Criar Ficha do Inimigo<br/>(daggerheart_create_adversary_spec)"]
-    Step1 -->|Retorna ID do Inimigo| Step2["2. Ativar Cena de Batalha<br/>(daggerheart_manage_scene_environment)"]
+    Step1 -->|"Retorna ID do Inimigo"| Step2["2. Ativar Cena de Batalha<br/>(daggerheart_manage_scene_environment)"]
     Step2 --> Step3["3. Criar Diário de Contrato/Quest<br/>(daggerheart_create_quest_journal)"]
     Step3 --> Step4["4. Inicializar Action Tracker<br/>(daggerheart_manage_action_tracker)"]
     Step4 --> Complete["Encontro Pronto para Jogar!"]
@@ -99,11 +117,11 @@ Em Daggerheart, o teste básico é realizado rolado dois dados de 12 lados de co
 
 ```mermaid
 graph TD
-    Roll["Rolagem 2d12<br/>(Hope + Fear)"] --> Compare{"Dado Hope > Dado Fear?"}
-    Compare -->|Sim| HopeOutcome["Sucesso ou Falha com HOPE<br/>(Ganha 1 ponto de Hope)"]
-    Compare -->|Não| FearOutcome["Sucesso ou Falha com FEAR<br/>(GM ganha 1 ponto de Fear / GM Move)"]
-    Roll --> CheckMatch{"Hope == Fear?"}
-    CheckMatch -->|Sim| CritSuccess["💥 CRITICAL SUCCESS!<br/>(Sucesso Máximo + Recupera Hope/Stress)"]
+    Roll["Rolagem 2d12<br/>(Hope + Fear)"] --> Compare{"Dado Hope maior que Dado Fear?"}
+    Compare -->|"Sim"| HopeOutcome["Sucesso ou Falha com HOPE<br/>(Ganha 1 ponto de Hope)"]
+    Compare -->|"Não"| FearOutcome["Sucesso ou Falha com FEAR<br/>(GM ganha 1 ponto de Fear / GM Move)"]
+    Roll --> CheckMatch{"Dado Hope igual ao Dado Fear?"}
+    CheckMatch -->|"Sim"| CritSuccess["CRITICAL SUCCESS!<br/>(Sucesso Máximo + Recupera Hope/Stress)"]
 ```
 
 ### 🛡️ Resolução de Dano e Limiares (Damage Thresholds & Armor Slots)
@@ -113,13 +131,13 @@ Daggerheart substitui o acúmulo infinito de dano por **Limiares de Dano (Minor,
 ```mermaid
 graph LR
     D["Dano Recebido<br/>(ex: 18 de Dano)"] --> ArmorCheck{"Usar Armor Slot?"}
-    ArmorCheck -->|Sim| Reduce["Subtrai Valor da Armadura<br/>(18 - 4 = 14 Dano)"]
-    ArmorCheck -->|Não| Evaluate["Compara Dano com Limiares"]
+    ArmorCheck -->|"Sim"| Reduce["Subtrai Valor da Armadura<br/>(18 - 4 = 14 Dano)"]
+    ArmorCheck -->|"Não"| Evaluate["Compara Dano com Limiares"]
     Reduce --> Evaluate
-    Evaluate -->|Dano < Minor| Low["0 HP Perdidos"]
-    Evaluate -->|Minor <= Dano < Major| Min["-1 HP"]
-    Evaluate -->|Major <= Dano < Severe| Maj["-2 HP"]
-    Evaluate -->|Dano >= Severe| Sev["-3 HP"]
+    Evaluate -->|"Dano menor que Minor"| Low["0 HP Perdidos"]
+    Evaluate -->|"Dano entre Minor e Major"| Min["-1 HP"]
+    Evaluate -->|"Dano entre Major e Severe"| Maj["-2 HP"]
+    Evaluate -->|"Dano maior ou igual a Severe"| Sev["-3 HP"]
 ```
 
 ---

@@ -47,7 +47,9 @@ Você pode usar os scripts de inicialização única que verificam o Node.js, cr
 
 ## 🔌 Configuração de Conexão com o Foundry VTT
 
-O servidor MCP se conecta diretamente ao Foundry VTT via protocolo **WebSocket (Socket.IO)** utilizando as credenciais de um usuário cadastrado no jogo. Não é necessário instalar nenhum módulo adicional no Foundry VTT.
+O servidor MCP se conecta ao Foundry VTT via protocolo **WebSocket (Socket.IO)** utilizando as credenciais de um usuário cadastrado no jogo. Para suporte completo a buscas de compêndios e conexão em tempo real, utilize os dois módulos de integração no Foundry VTT:
+- **[Foundry MCP Bridge](https://foundryvtt.com/packages/foundry-mcp-bridge)** (Pacote de infraestrutura WebSocket/Socket.IO)
+- **[Foundry MCP Companion](https://github.com/JoaoMartins160/foundryvtt-mcp-companion)** (Módulo complementar para RPC de compêndios e Game Settings)
 
 ### Pré-requisitos
 - Servidor Foundry VTT (Versão V14 Build 364 ou superior) em execução.
