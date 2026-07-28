@@ -1,0 +1,27 @@
+name: Feature Request
+description: Sugira uma nova ferramenta MCP ou funcionalidade para o sistema
+title: "[FEAT]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Obrigado por sugerir uma nova funcionalidade para o Academia-arcana-MCP!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema ou Motivação
+      description: Sua sugestão é relacionada a um problema existente ou uma nova oportunidade?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solução Proposta
+      description: Descreva claramente a nova ferramenta, funcionalidade ou fluxo esperado.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas Consideradas
+      description: Descreva quaisquer soluções ou abordagens alternativas que você tenha considerado.
