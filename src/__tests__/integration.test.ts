@@ -47,7 +47,7 @@ describe("Integration Tests", () => {
 
     vi.clearAllMocks();
     mockAxios.create = vi.fn().mockReturnValue(mockAxiosInstance);
-    mockAxios.default = mockAxios;
+    (mockAxios as unknown as Record<string, unknown>).default = mockAxios;
   });
 
   afterEach(() => {
@@ -166,7 +166,13 @@ describe("Integration Tests", () => {
 
       expect(result.actors).toHaveLength(1);
       expect(result.actors[0].name).toBe("Gandalf");
-      expect(result.actors[0].abilities?.int?.mod).toBe(5);
+      expect(
+        (
+          result.actors[0] as unknown as {
+            abilities?: { int?: { mod: number } };
+          }
+        ).abilities?.int?.mod,
+      ).toBe(5);
       expect(result.total).toBe(1);
     });
 

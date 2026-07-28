@@ -65,8 +65,11 @@ export interface Tool {
 /**
  * Base tool class with automatic validation
  */
+// Handle Ajv module constructability in ESM
+const AjvConstructor = Ajv as unknown as new (opts?: object) => any;
+
 export abstract class BaseTool implements Tool {
-  private static readonly ajv = new Ajv({
+  private static readonly ajv = new AjvConstructor({
     allErrors: true,
     verbose: true,
     strict: true,
@@ -122,7 +125,7 @@ export abstract class BaseTool implements Tool {
     if (!valid) {
       const errors =
         validate.errors
-          ?.map((err) => {
+          ?.map((err: { instancePath?: string; message?: string }) => {
             const instancePath = err.instancePath || "root";
             return `${instancePath}: ${err.message}`;
           })
