@@ -34,7 +34,8 @@ Para obter a experiência completa de comunicação e busca de compêndios entre
 - **Instalação**: No Foundry VTT, acesse **Add-on Modules** → **Install Module** → Busque por `Foundry MCP Bridge` ou cole a URL do manifesto.
 
 ### 2. ⚡ Foundry MCP Companion (`foundryvtt-mcp-companion`)
-- **Repositório & Download**: [Foundry MCP Companion no GitHub](https://github.com/JoaoMartins160/foundryvtt-mcp-companion)
+- **Código Fonte**: [Módulo Companion no GitHub](https://github.com/JoaoMartins160/Academia-arcana-MCP/tree/main/foundryvtt-mcp-companion)
+- **Manifesto de Instalação**: `https://raw.githubusercontent.com/JoaoMartins160/Academia-arcana-MCP/main/foundryvtt-mcp-companion/module.json`
 - **Função**: Módulo complementar oficial do **Academia-arcana-MCP** que habilita:
   - **RPC de Compêndios em Tempo Real**: Buscas ultrarrápidas de itens, magias e regras direto no compêndio do cliente.
   - **Painel de Configurações no Jogo**: Configuração de porta WebSocket, reconexão automática e logs no menu **Game Settings** do Foundry VTT.
