@@ -1,251 +1,162 @@
-# FoundryVTT MCP Server
+# Academia-arcana-MCP — Servidor MCP para Foundry VTT
 
-[![npm version](https://img.shields.io/npm/v/foundryvtt-mcp)](https://www.npmjs.com/package/foundryvtt-mcp)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Versão](https://img.shields.io/badge/vers%C3%A3o-1.1.0-blue.svg)](CHANGELOG.md)
+[![Licença: MIT](https://img.shields.io/badge/Licen%C3%A7a-MIT-yellow.svg)](LICENSE)
 
-A [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server that integrates with FoundryVTT, allowing AI assistants to interact with your tabletop gaming sessions through natural language.
+Servidor **Model Context Protocol (MCP)** avançado para integração local e direta com o **Foundry VTT (Versão V14 Build 364)** via comunicação nativa WebSocket (Socket.IO). Permite que assistentes de Inteligência Artificial (como Claude Desktop, VS Code, Antigravity) interajam, leiam e mutem o estado das suas sessões de RPG em tempo real usando linguagem natural.
 
-## Features
+---
 
-- **Dice Rolling** — standard RPG notation with any formula
-- **Data Querying** — search and inspect actors, items, scenes, journals
-- **Game State** — combat tracking, chat messages, user presence
-- **Content Generation** — NPCs, loot tables, rule lookups
-- **World Search** — full-text search across all game entities
-- **Live Connection** — Socket.IO loads complete world state on connect
-- **MCP Resources** — `foundry://` URIs for direct data access
-- **Diagnostics** — optional server health monitoring
+## 🌟 Principais Recursos
 
-## Quick Start
+- **Conexão Nativa WebSocket (Socket.IO)**: Conecta-se diretamente ao mundo ativo do Foundry VTT sem a necessidade de APIs REST legadas ou módulos customizados de terceiros.
+- **Suporte Nativo ao Sistema Daggerheart (v1.1.0)**:
+  - Rolagens estendidas de Duality (2d12 Hope vs Fear) com Vantagem/Desvantagem e acertos críticos.
+  - Cálculo automatizado de danos comparados com **Damage Thresholds (Minor/Major/Severe)** e mitigação via **Armor Slots**.
+  - Gerenciamento dinâmico de turnos sem iniciativa via **Action Tracker / Action Tokens**.
+  - Construtor completo de personagens (PC Builder) e adversários (Tier 0 a 4).
+  - Busca inteligente em compêndios de Daggerheart por nível, classe, domínio e raridade.
+  - Automação via **Action Graphs** e **Macro Pipelines** (`daggerheart_pipeline_encounter_setup`, `daggerheart_pipeline_full_character_onboarding`).
+- **Módulo Dedicado para D&D 5e**: Estrutura de sistema isolada em `src/systems/dnd5e/` (`Dnd5eSystemAdapter`, `Dnd5eIndexBuilder`, `Dnd5eCharacterManager`, `Dnd5eCombatManager`).
+- **Ferramentas Gerais do Foundry VTT**: Busca, inspeção e mutação de Atores, Itens, Cenas, Diários, Combates, Tokens e Histórico de Chat.
+- **Mutações Seguras de Estado**: Operações de gravação protegidas pela flag `FOUNDRY_WRITE_ENABLED=true` utilizando o protocolo seguro `modifyDocument`.
+- **Recursos MCP (`foundry://`)**: Acesso direto a URIs de dados brutos (`foundry://actors`, `foundry://scenes/current`, `foundry://journals`).
 
-### Prerequisites
+---
 
-- Node.js 18+ (or [Bun](https://bun.sh/))
-- FoundryVTT server running with an active world
-- MCP-compatible AI client (Claude Desktop, Claude Code, VS Code, etc.)
+## 🏗️ Arquitetura do Projeto (Clean Architecture por Sistema)
 
-### Recommended: Create a Dedicated API User
+O projeto organiza as ferramentas de MCP dividindo rigorosamente as capacidades nativas do Foundry VTT das regras específicas de cada sistema de RPG:
 
-It is recommended to create a separate FoundryVTT user account for the MCP server rather than using your own GM or player account. This provides better security and auditability.
-
-**In FoundryVTT:**
-1. Go to **Configuration** → **User Management**
-2. Click **Create User**
-3. Set a username (e.g., `mcp-api`) and a strong password
-4. Assign the **Assistant GM** role (needed to read world data and roll dice)
-5. Use this account's credentials in your MCP configuration
-
-**Benefits:**
-- Chat messages and actions from the MCP server are clearly attributed to a separate user
-- You can revoke access by disabling the API user without affecting your own account
-- Limits blast radius if credentials are ever exposed
-
-### Installation
-
-Run directly without installing — no clone needed:
-
-```bash
-bunx foundryvtt-mcp
+```text
+src/
+├── systems/                          # Módulos de Sistemas de RPG
+│   ├── daggerheart/                  # Módulo Daggerheart (Ferramentas, Router, Handlers e Schemas Zod)
+│   │   └── tools/
+│   │       ├── daggerheart_definitions.ts
+│   │       ├── daggerheart_router.ts
+│   │       └── handlers/             # subpastas por domínio (actor, combat, compendium, dice, etc.)
+│   │
+│   └── dnd5e/                        # Módulo D&D 5e (Adapter, IndexBuilder, Managers)
+│       ├── dnd5e_system_adapter.ts
+│       ├── dnd5e_character_manager.ts
+│       └── dnd5e_combat_manager.ts
+│
+└── tools/                            # Ferramentas GERAIS / NATIVAS do Foundry VTT
+    ├── definitions.ts                # Definições Core do Foundry VTT
+    ├── router.ts                     # Roteador central que delega ferramentas por sistema
+    └── handlers/                     # Handlers nativos (actor, chat, combat, item, journal, scene, etc.)
 ```
 
-Or with npx:
+---
 
-```bash
-npx -y foundryvtt-mcp
-```
+## 🚀 Inicio Rápido
 
-### Client Configuration
+### Pré-requisitos
 
-#### Claude Desktop / Claude Code
+- **Node.js 18+** instalado.
+- Servidor **Foundry VTT (V14+)** rodando localmente ou remotamente com um **mundo ativo** carregado.
+- Cliente IA compatível com MCP (Claude Desktop, VS Code, etc.).
 
-Add to your MCP configuration (`claude_desktop_config.json` or `.mcp.json`):
+### Configuração Recomendada de Usuário no Foundry VTT
+
+Para melhor auditoria e segurança:
+1. No Foundry VTT, acesse **Configurações** → **Gerenciamento de Usuários**.
+2. Crie um usuário dedicado para a IA (ex: `mcp-assistant`).
+3. Atribua o papel de **Assistant GM** ou **GM** (necessário para ler dados do mundo e realizar mutações via `modifyDocument`).
+
+### Configuração do Cliente MCP
+
+No seu arquivo de configuração do cliente MCP (ex: `claude_desktop_config.json` ou `.mcp.json`):
 
 ```json
 {
   "mcpServers": {
     "foundryvtt": {
-      "command": "bunx",
-      "args": ["foundryvtt-mcp"],
+      "command": "node",
+      "args": ["d:/Foundry/Academia-arcana-MCP/dist/index.js"],
       "env": {
         "FOUNDRY_URL": "http://localhost:30000",
-        "FOUNDRY_USERNAME": "your_username",
-        "FOUNDRY_PASSWORD": "your_password"
+        "FOUNDRY_USERNAME": "mcp-assistant",
+        "FOUNDRY_PASSWORD": "sua_senha_aqui",
+        "FOUNDRY_WRITE_ENABLED": "true",
+        "LOG_LEVEL": "info"
       }
     }
   }
 }
 ```
 
-#### VS Code
+---
 
-Add to your VS Code MCP settings:
+## ⚙️ Variáveis de Ambiente (`.env`)
 
-```json
-{
-  "servers": {
-    "foundryvtt": {
-      "command": "bunx",
-      "args": ["foundryvtt-mcp"],
-      "env": {
-        "FOUNDRY_URL": "http://localhost:30000",
-        "FOUNDRY_USERNAME": "your_username",
-        "FOUNDRY_PASSWORD": "your_password"
-      }
-    }
-  }
-}
-```
+| Variável | Obrigatório | Descrição | Padrão |
+| :--- | :---: | :--- | :---: |
+| `FOUNDRY_URL` | **Sim** | URL base do servidor Foundry VTT (ex: `http://localhost:30000`) | - |
+| `FOUNDRY_USERNAME` | **Sim** | Nome do usuário cadastrado no Foundry VTT | - |
+| `FOUNDRY_PASSWORD` | **Sim** | Senha do usuário do Foundry VTT | - |
+| `FOUNDRY_WRITE_ENABLED` | Não | Habilita mutações no jogo (`true` para criar/editar atores, diários, combates) | `false` |
+| `LOG_LEVEL` | Não | Nível de log (`debug`, `info`, `warn`, `error`) | `info` |
+| `FOUNDRY_TIMEOUT` | Não | Timeout da conexão WebSocket em milissegundos | `10000` |
 
-### Development Setup
+---
 
-For local development or contributing:
+## 🧰 Ferramentas MCP Disponíveis
 
-```bash
-git clone https://github.com/laurigates/foundryvtt-mcp.git
-cd foundryvtt-mcp
-bun install
-bun run setup-wizard
-```
+### ⚔️ Sistema Daggerheart (`daggerheart_*`)
+- `daggerheart_roll_duality_extended` — Rolagem estendida 2d12 Duality (Hope/Fear, Vantagem/Desvantagem, Críticos).
+- `daggerheart_apply_damage_with_thresholds` — Aplicação de dano contra limiares (Minor/Major/Severe) e Armor Slots.
+- `daggerheart_manage_action_tracker` — Controle e mutação de Action Tokens no Action Tracker de combate.
+- `daggerheart_create_character` — Construtor e onboarding completo de personagens (Ancestry, Community, Class, Domain Cards).
+- `daggerheart_invoke_experience` — Invocação de experiências (+1/+2) em rolagens de Duality.
+- `daggerheart_search_compendium` — Busca refinada em compêndios de Daggerheart.
+- `daggerheart_execute_action_graph` — Execução de grafos de ações encadeadas com resolução de variáveis.
+- `daggerheart_pipeline_encounter_setup` — Macro pipeline para criação de encontro completo (Inimigo + Cena + Diário de Quest).
+- `daggerheart_pipeline_full_character_onboarding` — Macro pipeline para onboarding de personagem em 1 clique.
+- `daggerheart_create_quest_journal` — Criação de diários de missões e contratos formatados.
+- `daggerheart_create_campaign_dashboard` — Painel de controle de campanha com marcadores de Hope/Fear e Relógio de Eventos.
+- `daggerheart_create_adversary_spec` — Criação rápida de fichas de adversários por Tier (0 a 4).
+- `daggerheart_get_combat_tactical_context` — Visão tática de combate com bandas de distância (*Melee, Very Close, Close, Far, Very Far*).
+- `daggerheart_modify_combat_resources` — Ajuste rápido de HP, Stress, Hope, Fear e Armor Slots.
+- `daggerheart_manage_domain_cards` — Adição e gerenciamento de cartas de domínio.
+- `daggerheart_roll_table` — Rolagem em tabelas expansíveis do Daggerheart.
+- `daggerheart_manage_scene_environment` — Controle de iluminação, escuridão atmosférica e notas da cena.
 
-The setup wizard will detect your FoundryVTT server, test connectivity, and generate your `.env` configuration.
+### 🛡️ Ferramentas Gerais do Foundry VTT
+- `search_actors` / `get_actor_details` — Busca e inspeção detalhada de atores/NPCs.
+- `update_actor_attributes` / `create_actor_item` — Atualização de atributos e itens.
+- `search_items` — Consulta de equipamentos, magias e itens.
+- `get_combat_state` / `next_turn` / `set_initiative` — Controle de combate geral.
+- `get_scene_info` / `move_token` — Inspeção e movimentação de tokens na cena.
+- `search_journals` / `create_journal` — Leitura e criação de entradas de diário.
+- `roll_dice` — Rolagem de dados na notação padrão de RPG.
 
-To configure manually, see the [Configuration Guide](docs/guides/configuration.md).
+---
 
-## Environment Variables
+## 💻 Desenvolvimento Local & Qualidade
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `FOUNDRY_URL` | Yes | FoundryVTT server URL (e.g., `http://localhost:30000`) |
-| `FOUNDRY_USERNAME` | Yes | FoundryVTT user account |
-| `FOUNDRY_PASSWORD` | Yes | FoundryVTT user password |
-| `FOUNDRY_USER_ID` | No | Bypass username-to-ID resolution |
-| `FOUNDRY_WRITE_ENABLED` | No | Enable game-state mutations — `true` required for the write tools (default: `false`) |
-| `LOG_LEVEL` | No | `debug`, `info`, `warn`, or `error` (default: `info`) |
-| `FOUNDRY_TIMEOUT` | No | Request timeout in ms (default: `10000`) |
-
-## Usage
-
-Ask your AI assistant things like:
-
-- "Roll 1d20+5 for an attack roll"
-- "Show me all the NPCs in this scene"
-- "What's the current combat initiative order?"
-- "Search the world for anything related to dragons"
-- "Generate a random NPC merchant"
-
-## Available Tools
-
-### Data Access
-
-- `search_actors` — find characters, NPCs, monsters
-- `get_actor_details` — detailed character information
-- `search_items` — find equipment, spells, consumables
-- `get_scene_info` — current scene details
-- `search_journals` — search notes and handouts
-- `get_journal` — retrieve a specific journal entry
-- `get_users` — list online users and their status
-- `get_combat_state` — combat state and initiative order
-- `get_chat_messages` — recent chat history
-
-### Write Operations (require `FOUNDRY_WRITE_ENABLED=true`)
-
-Game-state mutations are **disabled by default**. They use the Socket.IO
-`modifyDocument` protocol over an authenticated session, and the connected user
-needs GM/owner permission. Set `FOUNDRY_WRITE_ENABLED=true` to enable them.
-
-- `next_turn` — advance the active combat to the next turn (wraps to the next round)
-- `end_combat` — end (delete) the active combat encounter
-- `set_initiative` — set a combatant's initiative in the active combat
-- `move_token` — move a token to new x/y coordinates on its scene
-- `apply_status_effect` — apply or remove a status condition (e.g. prone, stunned) on a token's actor
-- `update_actor_attributes` — patch an actor's `system` attributes (HP, currency, spell slots, …)
-- `create_actor_item` — add an inline item to an actor
-- `update_actor_item` — apply a JSON merge patch to an actor's item
-- `delete_actor_item` — remove an item from an actor
-
-### World
-
-- `search_world` — full-text search across all game entities
-- `get_world_summary` — overview of the current world state
-- `refresh_world_data` — reload world data from FoundryVTT
-
-### Game Mechanics
-
-- `roll_dice` — roll dice with any formula
-- `lookup_rule` — game rules and spell descriptions
-
-### Content Generation
-
-- `generate_npc` — create random NPCs
-- `generate_loot` — create treasure appropriate for level
-
-### Diagnostics
-
-- `get_recent_logs` — retrieve filtered FoundryVTT logs
-- `search_logs` — search logs with regex patterns
-- `get_system_health` — server performance and health metrics
-- `diagnose_errors` — analyze errors with troubleshooting suggestions
-- `get_health_status` — comprehensive health diagnostics
-
-## Available Resources
-
-- `foundry://actors` — all actors in the world
-- `foundry://items` — all items in the world
-- `foundry://scenes` — all scenes
-- `foundry://scenes/current` — current active scene
-- `foundry://journals` — all journal entries
-- `foundry://users` — online users
-- `foundry://combat` — active combat state
-- `foundry://world/settings` — world and campaign settings
-- `foundry://system/diagnostics` — system diagnostics
-
-## Troubleshooting
-
-The connectivity and setup helpers ship in the source tree (not the published `bin`), so run them from a dev checkout:
+Para desenvolver ou contribuir com o projeto:
 
 ```bash
-git clone https://github.com/laurigates/foundryvtt-mcp.git
-cd foundryvtt-mcp && bun install
-bun run test-connection   # Probe FoundryVTT connectivity
-bun run setup-wizard      # Re-run interactive setup
+# Instalar dependências
+npm install
+
+# Rodar o servidor em modo de desenvolvimento (watch mode)
+npm run dev
+
+# Executar a suíte de testes unitários
+npm test
+
+# Executar a verificação de lint e formatação
+npx biome check src/
+
+# Checar a compilação do TypeScript
+npx tsc --noEmit
 ```
 
-Detailed guide: [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+---
 
-## Development
+## 📜 Licença
 
-```bash
-bun run build          # Compile TypeScript and make dist/index.js executable
-bun run dev            # Development mode with hot reload
-bun test               # Unit tests (Vitest)
-bun run test:e2e       # E2E tests (Playwright)
-bun run lint           # Lint code (Biome)
-bun run smoke          # Startup smoke test against the local build
-bun run smoke:pack     # Pack-and-install smoke test (mirrors what npx consumers get)
-```
-
-See [Development Guide](docs/guides/development.md) for project structure, adding tools, testing, and building.
-
-## Roadmap
-
-See [Feature Tracker](docs/blueprint/feature-tracker.md) for completed and planned features.
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## License
-
-MIT License — see [LICENSE](LICENSE) for details.
-
-## Support
-
-- **Issues**: [GitHub Issues](https://github.com/laurigates/foundryvtt-mcp/issues)
-- **Discord**: [FoundryVTT Discord](https://discord.gg/foundryvtt) #api-development
-- **Docs**: [FoundryVTT API](https://foundryvtt.com/api/)
-
-## Acknowledgments
-
-- FoundryVTT team for the excellent VTT platform
-- Anthropic for the Model Context Protocol
-- The tabletop gaming community for inspiration and feedback
+Este projeto é distribuído sob a licença [MIT](LICENSE).
