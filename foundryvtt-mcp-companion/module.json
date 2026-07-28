@@ -1,0 +1,26 @@
+{
+  "id": "foundryvtt-mcp-companion",
+  "title": "Foundry MCP Companion",
+  "description": "Módulo oficial complementar para Academia-arcana-MCP. Permite buscas de alta performance em Compêndios e suporte nativo a WebSocket no Foundry VTT (v11 a v14).",
+  "version": "1.1.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "João Pedro (Academia Arcana Team)",
+      "email": "joaopedro.martisnespindola@gmail.com",
+      "url": "https://github.com/JoaoMartins160"
+    }
+  ],
+  "esmodules": [],
+  "scripts": [
+    "main.js"
+  ],
+  "styles": [],
+  "url": "https://github.com/JoaoMartins160/Academia-arcana-MCP/tree/main/foundryvtt-mcp-companion",
+  "manifest": "https://raw.githubusercontent.com/JoaoMartins160/Academia-arcana-MCP/main/foundryvtt-mcp-companion/module.json",
+  "download": "https://github.com/JoaoMartins160/Academia-arcana-MCP/releases/latest/download/foundryvtt-mcp-companion.zip",
+  "license": "LICENSE"
+}
