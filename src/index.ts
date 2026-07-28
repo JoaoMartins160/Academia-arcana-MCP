@@ -31,6 +31,7 @@ import dotenv from "dotenv";
 import { config } from "./config/index.js";
 import { DiagnosticsClient } from "./diagnostics/client.js";
 import { FoundryClient, type FoundryClientConfig } from "./foundry/client.js";
+import { initializeSystemRegistry } from "./systems/system_registry_initializer.js";
 import {
   getAllResources,
   getAllTools,
@@ -39,7 +40,6 @@ import {
 } from "./tools/index.js";
 import { DiagnosticSystem } from "./utils/diagnostics.js";
 import { logger } from "./utils/logger.js";
-import { initializeSystemRegistry } from "./systems/system_registry_initializer.js";
 
 // Silence dotenv logs and protect MCP Stdio JSON-RPC stream
 process.env.DOTENV_CONFIG_QUIET = "true";

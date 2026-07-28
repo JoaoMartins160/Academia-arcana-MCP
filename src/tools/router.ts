@@ -6,6 +6,7 @@ import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
 import type { DiagnosticsClient } from "../diagnostics/client.js";
 import type { AttributePatch, FoundryClient } from "../foundry/client.js";
 import type { ActorItemCreateSource } from "../foundry/types.js";
+import { routeDaggerheartToolRequest } from "../systems/daggerheart/tools/daggerheart_router.js";
 import type { DiagnosticSystem } from "../utils/diagnostics.js";
 import { logger } from "../utils/logger.js";
 import type { ToolContext, ToolResult } from "./base.js";
@@ -25,8 +26,6 @@ import {
   handleSetInitiative,
   handleStartCombat,
 } from "./handlers/combat/combat-mutations.js";
-import { handleModifyDaggerheartCombatResources } from "./handlers/combat/daggerheart_resource_mutation_handler.js";
-import { handleGetDaggerheartCombatTacticalContext } from "./handlers/combat/daggerheart_tactical_combat_context_handler.js";
 import {
   handleGetCompendiumsList,
   handleSearchCompendium,
@@ -38,7 +37,7 @@ import {
   handleGetSystemHealth,
   handleSearchLogs,
 } from "./handlers/diagnostic/diagnostic-handler.js";
-import { handleRollDaggerheartDualityExtended } from "./handlers/dice/daggerheart_duality_roll_handler.js";
+
 // Import all tool handlers
 import {
   handleRollDaggerheart,
@@ -48,36 +47,20 @@ import {
 import { handleCreateFolder } from "./handlers/folder/folder-handler.js";
 import { handleCreateAdversary } from "./handlers/generation/adversary-generation.js";
 import {
-  type DaggerheartAdversarySpecArgs,
-  handleCreateDaggerheartAdversarySpec,
-} from "./handlers/generation/daggerheart_adversary_spec_creator.js";
-import {
   handleGenerateLoot,
   handleGenerateNPC,
   handleLookupRule,
 } from "./handlers/generation/generation-handler.js";
-import { handleManageDaggerheartDomainCards } from "./handlers/item/daggerheart_domain_card_handler.js";
 import {
   handleCreateItem,
   handleSearchItems,
 } from "./handlers/item/item-handler.js";
-import { handleManageDaggerheartSceneEnvironment } from "./handlers/scene/daggerheart_scene_management_handler.js";
-import { handleRollDaggerheartTable } from "./handlers/world/daggerheart_roll_table_handler.js";
-
 import {
   handleCreateActorItem,
   handleDeleteActorItem,
   handleDeleteItem,
   handleUpdateActorItem,
 } from "./handlers/item/item-mutations.js";
-import {
-  type DaggerheartCampaignDashboardArgs,
-  handleCreateDaggerheartCampaignDashboard,
-} from "./handlers/journal/daggerheart_campaign_dashboard_handler.js";
-import {
-  type DaggerheartQuestJournalArgs,
-  handleCreateDaggerheartQuestJournal,
-} from "./handlers/journal/daggerheart_quest_journal_handler.js";
 import {
   handleCreateJournal,
   handleGetJournal,
@@ -105,8 +88,8 @@ export async function routeToolRequest(
   name: string,
   args: Record<string, unknown>,
   foundryClient: FoundryClient,
-  diagnosticsClient: DiagnosticsClient,
-  diagnosticSystem: DiagnosticSystem,
+  diagnosticsClient?: DiagnosticsClient,
+  diagnosticSystem?: DiagnosticSystem,
 ): Promise<ToolResult> {
   logger.debug(`Routing tool request: ${name}`, { args });
 
@@ -129,6 +112,10 @@ export async function routeToolRequest(
         `Tool execution failed: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
     }
+  }
+
+  if (name.startsWith("daggerheart_")) {
+    return routeDaggerheartToolRequest(name, args, foundryClient);
   }
 
   switch (name) {
@@ -412,35 +399,6 @@ export async function routeToolRequest(
         foundryClient,
       );
 
-    // Daggerheart specialized tools
-    case "daggerheart_create_quest_journal":
-      return handleCreateDaggerheartQuestJournal(
-        args as unknown as DaggerheartQuestJournalArgs,
-        foundryClient,
-      );
-    case "daggerheart_create_campaign_dashboard":
-      return handleCreateDaggerheartCampaignDashboard(
-        args as unknown as DaggerheartCampaignDashboardArgs,
-        foundryClient,
-      );
-    case "daggerheart_create_adversary_spec":
-      return handleCreateDaggerheartAdversarySpec(
-        args as unknown as DaggerheartAdversarySpecArgs,
-        foundryClient,
-      );
-    case "daggerheart_get_combat_tactical_context":
-      return handleGetDaggerheartCombatTacticalContext(args, foundryClient);
-    case "daggerheart_roll_duality_extended":
-      return handleRollDaggerheartDualityExtended(args);
-    case "daggerheart_modify_combat_resources":
-      return handleModifyDaggerheartCombatResources(args, foundryClient);
-    case "daggerheart_manage_domain_cards":
-      return handleManageDaggerheartDomainCards(args, foundryClient);
-    case "daggerheart_roll_table":
-      return handleRollDaggerheartTable(args, foundryClient);
-    case "daggerheart_manage_scene_environment":
-      return handleManageDaggerheartSceneEnvironment(args, foundryClient);
-
     // Generation tools
     case "generate_npc":
       return handleGenerateNPC(
@@ -463,8 +421,20 @@ export async function routeToolRequest(
 
     // Diagnostics tools
     case "get_recent_logs":
+      if (!diagnosticsClient) {
+        throw new McpError(
+          ErrorCode.InternalError,
+          "Diagnostics client not initialized",
+        );
+      }
       return handleGetRecentLogs(args, diagnosticsClient);
     case "search_logs":
+      if (!diagnosticsClient) {
+        throw new McpError(
+          ErrorCode.InternalError,
+          "Diagnostics client not initialized",
+        );
+      }
       if (!("query" in args) || typeof args.query !== "string") {
         throw new Error("Missing required parameter: query");
       }
@@ -473,13 +443,31 @@ export async function routeToolRequest(
         diagnosticsClient,
       );
     case "get_system_health":
+      if (!diagnosticsClient) {
+        throw new McpError(
+          ErrorCode.InternalError,
+          "Diagnostics client not initialized",
+        );
+      }
       return handleGetSystemHealth(args, diagnosticsClient);
     case "diagnose_errors":
+      if (!diagnosticSystem) {
+        throw new McpError(
+          ErrorCode.InternalError,
+          "Diagnostic system not initialized",
+        );
+      }
       return handleDiagnoseErrors(
         args as { category?: string },
         diagnosticSystem,
       );
     case "get_health_status":
+      if (!diagnosticsClient) {
+        throw new McpError(
+          ErrorCode.InternalError,
+          "Diagnostics client not initialized",
+        );
+      }
       return handleGetHealthStatus(args, foundryClient, diagnosticsClient);
 
     default:
