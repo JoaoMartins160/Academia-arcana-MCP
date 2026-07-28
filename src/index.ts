@@ -39,6 +39,7 @@ import {
 } from "./tools/index.js";
 import { DiagnosticSystem } from "./utils/diagnostics.js";
 import { logger } from "./utils/logger.js";
+import { initializeSystemRegistry } from "./systems/system_registry_initializer.js";
 
 // Silence dotenv logs and protect MCP Stdio JSON-RPC stream
 process.env.DOTENV_CONFIG_QUIET = "true";
@@ -117,6 +118,9 @@ class FoundryMCPServer {
 
     // Initialize DiagnosticsClient
     this.diagnosticsClient = new DiagnosticsClient(this.foundryClient);
+
+    // Initialize System Registry with system adapters (Daggerheart)
+    initializeSystemRegistry();
 
     // Initialize DiagnosticSystem
     this.diagnosticSystem = new DiagnosticSystem(this.foundryClient);

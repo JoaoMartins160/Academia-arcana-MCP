@@ -130,6 +130,8 @@ D:\FOUNDRY\FOUNDRYVTT-MCP\SRC
 1. **Padrão de Handlers:** Qualquer nova funcionalidade adicionada como ferramenta (Tool) MCP deve ser mapeada em `tools/router.ts` (ou registro) e seu comportamento contido de forma atômica em um arquivo na pasta `tools/handlers/`.
 2. **Tipagem:** Utilize e expanda as interfaces de `src/foundry/types.ts` sempre que lidar com dados desconhecidos vindos da resposta JSON do FoundryVTT.
 3. **Logs:** Utilize `import { logger } from '../utils/logger.js'` para registrar eventos ou erros com os níveis adequados (`debug`, `info`, `warn`, `error`).
+4. **Nomenclatura de Arquivos (Exata e Snake Case):** Todos os arquivos de código devem utilizar nomes descritivos e exatos referentes ao que realizam no sistema. É estritamente proibido utilizar nomes genéricos como `index.ts`, `types.ts`, `adapter.ts`, `filters.ts` ou `index-builder.ts`. Utilize obrigatoriamente a convenção `snake_case` em todos os módulos e subdiretórios (ex: `system_registry_initializer.ts`, `system_registry.ts`, `compendium_index_builder_registry.ts`, `daggerheart_system_adapter.ts`, `daggerheart_filters.ts`, `daggerheart_compendium_index_builder.ts`).
+
 
 ---
 

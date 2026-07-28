@@ -1053,6 +1053,21 @@ export class FoundryClient {
     });
   }
 
+  /**
+   * Deletes a standalone world item via the `modifyDocument` socket protocol.
+   *
+   * @param itemId - 16-char alphanumeric item document id
+   */
+  async deleteItem(itemId: string): Promise<void> {
+    this.assertWriteable();
+    if (!FOUNDRY_ID_PATTERN.test(itemId)) {
+      throw new Error(`Invalid itemId format: ${itemId}`);
+    }
+    await this.modifyDocument("Item", "delete", {
+      ids: [itemId],
+    });
+  }
+
   // ==========================================================================
   // Combat mutation methods (WRITE — Socket.IO modifyDocument, FR-018)
   // ==========================================================================

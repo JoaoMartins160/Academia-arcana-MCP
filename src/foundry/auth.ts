@@ -153,38 +153,53 @@ export async function authenticateFoundry(
     // URL already validated by config; ignore parse errors here
   }
 
-  // Step 1: Get session cookie
-  const session = await getSessionCookie(baseUrl);
+  try {
+    // Step 1: Get session cookie
+    const session = await getSessionCookie(baseUrl);
 
-  // Step 2: Resolve user to document _id
-  const userId = await resolveUserId(baseUrl, user, session);
+    // Step 2: Resolve user to document _id
+    const userId = await resolveUserId(baseUrl, user, session);
 
-  // Step 3: POST /join as JSON with document _id
-  const joinRes = await axios.post(
-    `${baseUrl}/join`,
-    {
-      action: "join",
-      userid: userId,
-      password,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `session=${session}`,
+    // Step 3: POST /join as JSON with document _id
+    const joinRes = await axios.post(
+      `${baseUrl}/join`,
+      {
+        action: "join",
+        userid: userId,
+        password,
       },
-      // Accept 200 (success JSON) and 302 (redirect to /game on success)
-      validateStatus: (status) => status === 200 || status === 302,
-    },
-  );
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `session=${session}`,
+        },
+        // Accept 200 (success JSON) and 302 (redirect to /game on success)
+        validateStatus: (status) => status === 200 || status === 302,
+      },
+    );
 
-  if (
-    joinRes.data?.status !== "success" &&
-    joinRes.data?.redirect !== "/game"
-  ) {
-    const msg = joinRes.data?.message || joinRes.data?.error || "Unknown error";
-    throw new Error(`FoundryVTT authentication failed: ${msg}`);
+    if (
+      joinRes.data?.status !== "success" &&
+      joinRes.data?.redirect !== "/game"
+    ) {
+      const msg =
+        joinRes.data?.message || joinRes.data?.error || "Unknown error";
+      throw new Error(`FoundryVTT authentication failed: ${msg}`);
+    }
+
+    logger.info("FoundryVTT authentication successful", { userId });
+    return { session, userId };
+  } catch (error: any) {
+    if (
+      error?.code === "ECONNREFUSED" ||
+      error?.cause?.code === "ECONNREFUSED" ||
+      error?.name === "AggregateError" ||
+      error?.isAxiosError
+    ) {
+      throw new Error(
+        `Could not connect to FoundryVTT at ${baseUrl}. Please ensure the FoundryVTT server is running and accessible.`,
+      );
+    }
+    throw error;
   }
-
-  logger.info("FoundryVTT authentication successful", { userId });
-  return { session, userId };
 }

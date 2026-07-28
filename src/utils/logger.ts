@@ -80,7 +80,21 @@ class Logger {
     meta?: unknown,
   ): string {
     const timestamp = new Date().toISOString();
-    const metaStr = meta ? ` ${JSON.stringify(meta)}` : "";
+    let metaStr = "";
+    if (meta) {
+      if (typeof meta === "string") {
+        metaStr = ` ${meta}`;
+      } else if (meta instanceof Error) {
+        metaStr = ` ${meta.message || meta.name}`;
+      } else if (typeof meta === "object") {
+        const obj = meta as Record<string, unknown>;
+        const msg =
+          typeof obj.message === "string" && obj.message ? obj.message : "";
+        metaStr = msg ? ` ${msg}` : ` ${JSON.stringify(meta)}`;
+      } else {
+        metaStr = ` ${String(meta)}`;
+      }
+    }
     return `[${timestamp}] ${level.toUpperCase()}: ${message}${metaStr}`;
   }
 
@@ -99,69 +113,31 @@ class Logger {
    */
   debug(message: string, meta?: unknown): void {
     if (this.shouldLog("debug")) {
-      console.error(this.formatMessage("debug", message, meta));
+      process.stderr.write(`${this.formatMessage("debug", message, meta)}\n`);
     }
   }
 
-  /**
-   * Logs an informational message
-   *
-   * Used for general information about application flow and important events.
-   * Shown when LOG_LEVEL is 'debug' or 'info'.
-   *
-   * @param message - The info message
-   * @param meta - Optional metadata object
-   * @example
-   * ```typescript
-   * logger.info('Server started successfully', { port: 3000 });
-   * ```
-   */
   info(message: string, meta?: unknown): void {
     if (this.shouldLog("info")) {
-      console.error(this.formatMessage("info", message, meta));
+      process.stderr.write(`${this.formatMessage("info", message, meta)}\n`);
     }
   }
 
-  /**
-   * Logs a warning message
-   *
-   * Used for potentially problematic situations that don't prevent operation
-   * but should be noted. Shown when LOG_LEVEL is 'debug', 'info', or 'warn'.
-   *
-   * @param message - The warning message
-   * @param meta - Optional metadata object
-   * @example
-   * ```typescript
-   * logger.warn('Deprecated API endpoint used', { endpoint: '/old-api' });
-   * ```
-   */
   warn(message: string, meta?: unknown): void {
     if (this.shouldLog("warn")) {
-      console.error(this.formatMessage("warn", message, meta));
+      process.stderr.write(`${this.formatMessage("warn", message, meta)}\n`);
     }
   }
 
-  /**
-   * Logs an error message (highest priority)
-   *
-   * Used for error conditions and exceptions that affect application operation.
-   * Always shown regardless of LOG_LEVEL setting.
-   *
-   * @param message - The error message
-   * @param error - Optional error object or metadata
-   * @example
-   * ```typescript
-   * logger.error('Database connection failed', error);
-   * logger.error('Invalid user input', { input: userData, validation: errors });
-   * ```
-   */
   error(message: string, error?: unknown): void {
     if (this.shouldLog("error")) {
       const errorDetails =
         error instanceof Error
           ? { message: error.message, stack: error.stack }
           : error;
-      console.error(this.formatMessage("error", message, errorDetails));
+      process.stderr.write(
+        `${this.formatMessage("error", message, errorDetails)}\n`,
+      );
     }
   }
 }

@@ -25,6 +25,8 @@ import {
   handleSetInitiative,
   handleStartCombat,
 } from "./handlers/combat/combat-mutations.js";
+import { handleModifyDaggerheartCombatResources } from "./handlers/combat/daggerheart_resource_mutation_handler.js";
+import { handleGetDaggerheartCombatTacticalContext } from "./handlers/combat/daggerheart_tactical_combat_context_handler.js";
 import {
   handleGetCompendiumsList,
   handleSearchCompendium,
@@ -36,32 +38,52 @@ import {
   handleGetSystemHealth,
   handleSearchLogs,
 } from "./handlers/diagnostic/diagnostic-handler.js";
+import { handleRollDaggerheartDualityExtended } from "./handlers/dice/daggerheart_duality_roll_handler.js";
 // Import all tool handlers
 import {
   handleRollDaggerheart,
   handleRollDice,
 } from "./handlers/dice/dice-handler.js";
+
 import { handleCreateFolder } from "./handlers/folder/folder-handler.js";
 import { handleCreateAdversary } from "./handlers/generation/adversary-generation.js";
+import {
+  type DaggerheartAdversarySpecArgs,
+  handleCreateDaggerheartAdversarySpec,
+} from "./handlers/generation/daggerheart_adversary_spec_creator.js";
 import {
   handleGenerateLoot,
   handleGenerateNPC,
   handleLookupRule,
 } from "./handlers/generation/generation-handler.js";
+import { handleManageDaggerheartDomainCards } from "./handlers/item/daggerheart_domain_card_handler.js";
 import {
   handleCreateItem,
   handleSearchItems,
 } from "./handlers/item/item-handler.js";
+import { handleManageDaggerheartSceneEnvironment } from "./handlers/scene/daggerheart_scene_management_handler.js";
+import { handleRollDaggerheartTable } from "./handlers/world/daggerheart_roll_table_handler.js";
+
 import {
   handleCreateActorItem,
   handleDeleteActorItem,
+  handleDeleteItem,
   handleUpdateActorItem,
 } from "./handlers/item/item-mutations.js";
+import {
+  type DaggerheartCampaignDashboardArgs,
+  handleCreateDaggerheartCampaignDashboard,
+} from "./handlers/journal/daggerheart_campaign_dashboard_handler.js";
+import {
+  type DaggerheartQuestJournalArgs,
+  handleCreateDaggerheartQuestJournal,
+} from "./handlers/journal/daggerheart_quest_journal_handler.js";
 import {
   handleCreateJournal,
   handleGetJournal,
   handleSearchJournals,
 } from "./handlers/journal/journal-handler.js";
+
 import { handleReadResource } from "./handlers/resource/resource-handler.js";
 import { handleGetSceneInfo } from "./handlers/scene/scene-handler.js";
 import {
@@ -250,6 +272,11 @@ export async function routeToolRequest(
         args as { actorId: string; itemId: string },
         foundryClient,
       );
+    case "delete_item":
+      if (!("itemId" in args) || typeof args.itemId !== "string") {
+        throw new Error("Missing required parameter: itemId");
+      }
+      return handleDeleteItem(args as { itemId: string }, foundryClient);
 
     // Scene tools
     case "get_scene_info":
@@ -384,6 +411,35 @@ export async function routeToolRequest(
         args as { name: string; content?: string; folder?: string },
         foundryClient,
       );
+
+    // Daggerheart specialized tools
+    case "daggerheart_create_quest_journal":
+      return handleCreateDaggerheartQuestJournal(
+        args as unknown as DaggerheartQuestJournalArgs,
+        foundryClient,
+      );
+    case "daggerheart_create_campaign_dashboard":
+      return handleCreateDaggerheartCampaignDashboard(
+        args as unknown as DaggerheartCampaignDashboardArgs,
+        foundryClient,
+      );
+    case "daggerheart_create_adversary_spec":
+      return handleCreateDaggerheartAdversarySpec(
+        args as unknown as DaggerheartAdversarySpecArgs,
+        foundryClient,
+      );
+    case "daggerheart_get_combat_tactical_context":
+      return handleGetDaggerheartCombatTacticalContext(args, foundryClient);
+    case "daggerheart_roll_duality_extended":
+      return handleRollDaggerheartDualityExtended(args);
+    case "daggerheart_modify_combat_resources":
+      return handleModifyDaggerheartCombatResources(args, foundryClient);
+    case "daggerheart_manage_domain_cards":
+      return handleManageDaggerheartDomainCards(args, foundryClient);
+    case "daggerheart_roll_table":
+      return handleRollDaggerheartTable(args, foundryClient);
+    case "daggerheart_manage_scene_environment":
+      return handleManageDaggerheartSceneEnvironment(args, foundryClient);
 
     // Generation tools
     case "generate_npc":
