@@ -1,0 +1,47 @@
+name: Bug Report
+description: Relate um problema ou erro encontrado no servidor MCP do Foundry VTT
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Obrigado por relatar um problema! Por favor, preencha as informações abaixo para nos ajudar a investigar.
+  - type: input
+    id: version
+    attributes:
+      label: Versão do Academia-arcana-MCP
+      description: Qual versão do MCP você está utilizando? (ex: v1.1.0)
+      placeholder: v1.1.0
+    validations:
+      required: true
+  - type: input
+    id: foundry_version
+    attributes:
+      label: Versão do Foundry VTT
+      description: Qual versão/build do Foundry VTT está em uso? (ex: V14 Build 364)
+      placeholder: V14 Build 364
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição do Bug
+      description: Uma explicação clara e concisa sobre qual é o problema.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para Reproduzir
+      description: Passo a passo de como reproduzir o comportamento observado.
+      placeholder: |
+        1. Executar a tool '...'
+        2. Enviar os parâmetros '...'
+        3. Observar o erro '...'
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs ou Stack Trace
+      description: Cole aqui logs relevantes do servidor MCP.
