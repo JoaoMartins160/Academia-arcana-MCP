@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-07-28
+
+### Added
+- **Automation & Startup Scripts**: Added `start.sh` (Bash) and `start.ps1` (PowerShell) for automated environment checks, `.env` configuration, and one-click server initialization.
+- **Documentation & Visual Diagrams**:
+  - Comprehensive Portuguese documentation across `README.md`, `SETUP_GUIDE.md`, and `TROUBLESHOOTING.md`.
+  - Added visual Mermaid diagrams for Action Graph execution pipelines, system routing architecture, Duality Roll outcomes, and Damage Thresholds resolution.
+- **GitHub Community Standards**: Added `LICENSE` (MIT), `CODE_OF_CONDUCT.md` (Contributor Covenant v2.1), `CONTRIBUTING.md`, `SECURITY.md`, GitHub Issue Forms (`bug_report.yml`, `feature_request.yml`), and `PULL_REQUEST_TEMPLATE.md`.
+- **Security & Repository Protection**: Performed complete repository audit for secrets/credentials, and added `dumps/` directory to `.gitignore` to prevent accidental commits of debug state dumps.
+
 ## [1.1.0] - 2026-07-28
 
 ### Added

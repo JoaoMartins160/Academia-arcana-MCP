@@ -126,7 +126,24 @@ graph LR
 
 ## 🚀 Início Rápido
 
+### Inicialização Automatizada em 1 Clique (Recomendado)
+
+Disponibilizamos scripts automatizados que verificam a versão do Node.js, criam o arquivo `.env` a partir do modelo e instalam todas as dependências antes de iniciar o servidor:
+
+- **Linux / macOS / Bash**:
+  ```bash
+  chmod +x start.sh
+  ./start.sh
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  .\start.ps1
+  ```
+
+---
+
 ### Pré-requisitos
+
 
 - **Node.js 18+** instalado.
 - Servidor **Foundry VTT (V14+)** rodando localmente ou remotamente com um **mundo ativo** carregado.

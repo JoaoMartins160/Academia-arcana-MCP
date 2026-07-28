@@ -6,6 +6,24 @@ Este guia orienta o processo de instalação, configuração de ambiente e conex
 
 ## ⚡ Início Rápido
 
+### Opção A: Inicialização Automatizada (Recomendado)
+
+Você pode usar os scripts de inicialização única que verificam o Node.js, criam o `.env` e instalam as dependências automaticamente:
+
+- **Linux / macOS / Git Bash**:
+  ```bash
+  chmod +x start.sh
+  ./start.sh
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  .\start.ps1
+  ```
+
+---
+
+### Opção B: Passo a Passo Manual
+
 1. **Clonar e Instalar Dependências**:
    ```bash
    git clone https://github.com/JoaoMartins160/Academia-arcana-MCP.git
