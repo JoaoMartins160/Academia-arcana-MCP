@@ -24,6 +24,24 @@ Servidor **Model Context Protocol (MCP)** avançado para integração local e di
 
 ---
 
+## 🔌 Módulos do Foundry VTT (Integração & Downloads)
+
+Para obter a experiência completa de comunicação e busca de compêndios entre a IA e o Foundry VTT, o ecossistema utiliza dois módulos dedicados no Foundry VTT:
+
+### 1. 🌉 Foundry MCP Bridge (Módulo de Conexão WebSocket)
+- **Pacote Oficial**: [Foundry MCP Bridge no FoundryVTT Package Directory](https://foundryvtt.com/packages/foundry-mcp-bridge)
+- **Função**: Módulo de infraestrutura para abrir a comunicação nativa Socket.IO e WebSocket do Foundry VTT com o servidor MCP, permitindo a leitura e gravação de documentos no jogo em tempo real.
+- **Instalação**: No Foundry VTT, acesse **Add-on Modules** → **Install Module** → Busque por `Foundry MCP Bridge` ou cole a URL do manifesto.
+
+### 2. ⚡ Foundry MCP Companion (`foundryvtt-mcp-companion`)
+- **Repositório & Download**: [Foundry MCP Companion no GitHub](https://github.com/JoaoMartins160/foundryvtt-mcp-companion)
+- **Função**: Módulo complementar oficial do **Academia-arcana-MCP** que habilita:
+  - **RPC de Compêndios em Tempo Real**: Buscas ultrarrápidas de itens, magias e regras direto no compêndio do cliente.
+  - **Painel de Configurações no Jogo**: Configuração de porta WebSocket, reconexão automática e logs no menu **Game Settings** do Foundry VTT.
+  - **Indicador Visual de Status**: Botão de status interativo no menu de controles da cena indicando se o servidor MCP está conectado (`fas fa-plug-circle-bolt`).
+
+---
+
 ## 🏗️ Arquitetura do Projeto (Clean Architecture por Sistema)
 
 O projeto organiza as ferramentas de MCP dividindo rigorosamente as capacidades nativas do Foundry VTT das regras específicas de cada sistema de RPG:
