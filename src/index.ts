@@ -39,9 +39,33 @@ import {
 } from "./tools/index.js";
 import { DiagnosticSystem } from "./utils/diagnostics.js";
 import { logger } from "./utils/logger.js";
+import { initializeSystemRegistry } from "./systems/system_registry_initializer.js";
 
-// Load environment variables
+// Silence dotenv logs and protect MCP Stdio JSON-RPC stream
+process.env.DOTENV_CONFIG_QUIET = "true";
 dotenv.config({ quiet: true });
+
+// Redirect global console methods to protect MCP stdout/stderr JSON-RPC stream
+console.log = (...args: unknown[]) =>
+  logger.info(
+    args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" "),
+  );
+console.error = (...args: unknown[]) =>
+  logger.error(
+    args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" "),
+  );
+console.warn = (...args: unknown[]) =>
+  logger.warn(
+    args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" "),
+  );
+console.info = (...args: unknown[]) =>
+  logger.info(
+    args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" "),
+  );
+console.debug = (...args: unknown[]) =>
+  logger.debug(
+    args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" "),
+  );
 
 /**
  * Main FoundryVTT MCP Server class that handles all communication
@@ -94,6 +118,9 @@ class FoundryMCPServer {
 
     // Initialize DiagnosticsClient
     this.diagnosticsClient = new DiagnosticsClient(this.foundryClient);
+
+    // Initialize System Registry with system adapters (Daggerheart)
+    initializeSystemRegistry();
 
     // Initialize DiagnosticSystem
     this.diagnosticSystem = new DiagnosticSystem(this.foundryClient);
@@ -205,6 +232,7 @@ class FoundryMCPServer {
   async shutdown(): Promise<void> {
     try {
       await this.foundryClient.disconnect();
+      await this.server.close();
       logger.info("FoundryVTT MCP Server shutdown completed");
     } catch (error) {
       logger.error("Error during shutdown:", error);

@@ -30,7 +30,7 @@ export const diceTools = [
   {
     name: "roll_daggerheart",
     description:
-      "Rolls Hope and Fear dice (2d12) for the Daggerheart system, adding a modifier. Returns the total and whether the outcome was a Success/Failure with Hope or Fear.",
+      "RECOMMENDED FOR DAGGERHEART ROLLS: Rolls Hope and Fear dice (2d12) for the Daggerheart system, adding a modifier. Returns the total and whether the outcome was a Success/Failure with Hope or Fear.",
     inputSchema: {
       type: "object",
       properties: {
@@ -154,9 +154,9 @@ export const actorMutationTools = [
     },
   },
   {
-    name: "create_adversary",
+    name: "generate_adversary",
     description:
-      "Generates a Daggerheart adversary with stats, damage thresholds, and features in a single operation. Requires FOUNDRY_WRITE_ENABLED=true and an active Socket.IO connection.",
+      "CRITICAL GENERATION TOOL: Generates a complete Daggerheart adversary (NPC/Monster) actor with stats, attack, damage thresholds, and features based on system benchmarks. Use this tool when creating NPCs/monsters for Daggerheart.",
     inputSchema: {
       type: "object",
       properties: {
@@ -288,7 +288,7 @@ export const compendiumTools = [
   {
     name: "search_compendium",
     description:
-      "Search FoundryVTT compendium packs by name and metadata. Searches all enabled compendiums by default; the compendiumId filter scopes to one pack.",
+      "CRITICAL LOOKUP TOOL: Search FoundryVTT compendium packs by name and metadata. Always use this to search official compendium items, spells, or features before attempting custom creations.",
     inputSchema: {
       type: "object",
       properties: {
@@ -441,6 +441,21 @@ export const itemMutationTools = [
         },
       },
       required: ["actorId", "itemId"],
+    },
+  },
+  {
+    name: "delete_item",
+    description:
+      "Delete a standalone world item (requires FOUNDRY_WRITE_ENABLED + active Socket.IO connection).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        itemId: {
+          type: "string",
+          description: "The ID of the world item to delete",
+        },
+      },
+      required: ["itemId"],
     },
   },
 ];
@@ -972,6 +987,284 @@ export const worldMutationTools = [
 ];
 
 /**
+ * Daggerheart specialized tool definitions
+ */
+export const daggerheartTools = [
+  {
+    name: "daggerheart_create_quest_journal",
+    description:
+      "Create a formatted Daggerheart Quest & Contract Journal entry with objectives, Hope/Gold rewards, difficulty, and quest giver metadata.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        questTitle: { type: "string", description: "Title of the quest" },
+        questDescription: {
+          type: "string",
+          description: "Detailed description of the quest",
+        },
+        questType: {
+          type: "string",
+          enum: ["main", "side", "personal", "mystery", "bounty"],
+          description: "Type of quest (default: side)",
+        },
+        difficulty: {
+          type: "string",
+          enum: ["easy", "medium", "hard", "deadly"],
+          description: "Quest difficulty (default: medium)",
+        },
+        location: { type: "string", description: "Quest setting/location" },
+        questGiver: { type: "string", description: "NPC name or quest giver" },
+        rewards: {
+          type: "string",
+          description: "Quest rewards (e.g. 2 Hope, 50 Gold)",
+        },
+        objectives: {
+          type: "array",
+          items: { type: "string" },
+          description: "List of quest objective items",
+        },
+        folder: { type: "string", description: "Optional folder ID or name" },
+      },
+      required: ["questTitle", "questDescription"],
+    },
+  },
+  {
+    name: "daggerheart_create_campaign_dashboard",
+    description:
+      "Create a Daggerheart Campaign Navigation Dashboard Journal with Chapter/Act tracking, Hope/Fear trackers, and session logs index.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        campaignTitle: { type: "string", description: "Title of the campaign" },
+        campaignDescription: {
+          type: "string",
+          description: "Theme and summary of the campaign",
+        },
+        setting: { type: "string", description: "Primary setting or region" },
+        template: {
+          type: "string",
+          enum: ["five-part-adventure", "sandbox", "investigation", "custom"],
+          description: "Campaign structure template",
+        },
+        acts: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              title: { type: "string" },
+              description: { type: "string" },
+            },
+            required: ["title", "description"],
+          },
+          description: "Custom acts/chapters",
+        },
+        folder: { type: "string", description: "Optional folder ID or name" },
+      },
+      required: ["campaignTitle", "campaignDescription"],
+    },
+  },
+  {
+    name: "daggerheart_create_adversary_spec",
+    description:
+      "Create a Daggerheart Adversary Actor in Foundry V14 with strict Zod validation, Tier 0-4 power rating, adversary type, attributes, HP/Stress, and soft warnings for custom traits.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        name: { type: "string", description: "Adversary name" },
+        tier: {
+          type: "number",
+          description: "Adversary Tier rating (0 to 4)",
+        },
+        adversaryType: {
+          type: "string",
+          enum: ["minion", "social", "standard", "leader", "solo", "horde"],
+          description: "Adversary classification type",
+        },
+        hp: { type: "number", description: "Hit Points value (≥ 1)" },
+        stress: { type: "number", description: "Stress capacity (default: 3)" },
+        evasion: { type: "number", description: "Evasion score" },
+        armor: { type: "number", description: "Armor score (default: 0)" },
+        abilities: {
+          type: "object",
+          properties: {
+            agility: { type: "number" },
+            strength: { type: "number" },
+            finesse: { type: "number" },
+            instinct: { type: "number" },
+            presence: { type: "number" },
+            knowledge: { type: "number" },
+          },
+          description: "Ability modifiers",
+        },
+        motives: {
+          type: "array",
+          items: { type: "string" },
+          description: "List of adversary motives/goals",
+        },
+        experiences: {
+          type: "array",
+          items: { type: "string" },
+          description: "List of adversary experiences",
+        },
+        attackName: { type: "string", description: "Primary attack name" },
+        attackRange: {
+          type: "string",
+          description: "Attack range (Melee, Very Close, Close, Far, Very Far)",
+        },
+        damageFormula: {
+          type: "string",
+          description: "Damage formula (e.g., 2d8+3 physical)",
+        },
+        folder: { type: "string", description: "Optional folder ID or name" },
+      },
+      required: ["name", "tier", "adversaryType", "hp", "evasion"],
+    },
+  },
+  {
+    name: "daggerheart_get_combat_tactical_context",
+    description:
+      "Get complete tactical context of active Daggerheart combat, calculating distances into Daggerheart Range Bands (Melee, Very Close, Close, Far, Very Far) and generating an ASCII battlefield grid map.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        combatId: {
+          type: "string",
+          description: "Optional combat encounter ID",
+        },
+        tokenId: { type: "string", description: "Optional active token ID" },
+        zoomRadius: {
+          type: "number",
+          description: "Tactical view radius (default: 15)",
+        },
+      },
+    },
+  },
+  {
+    name: "daggerheart_roll_duality_extended",
+    description:
+      "Perform an extended Daggerheart Duality Roll (2d12 Hope vs Fear + modifier) with optional Advantage (+1d6) or Disadvantage (-1d6). Calculates total and Hope/Fear dominance or Duality Match Critical.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        modifier: { type: "number", description: "Attribute/action modifier" },
+        advantage: {
+          type: "boolean",
+          description: "Roll +1d6 advantage die",
+        },
+        disadvantage: {
+          type: "boolean",
+          description: "Roll -1d6 disadvantage die",
+        },
+        reason: { type: "string", description: "Reason for the roll" },
+      },
+    },
+  },
+  {
+    name: "daggerheart_modify_combat_resources",
+    description:
+      "Modify combat resources (HP, Stress, Hope, Fear, Armor Slots) and status conditions for Daggerheart actors and adversaries.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        actorId: { type: "string", description: "Target Actor ID" },
+        hpDelta: {
+          type: "number",
+          description: "Change in HP (e.g. -3 or +2)",
+        },
+        stressDelta: {
+          type: "number",
+          description: "Change in Stress (e.g. +1)",
+        },
+        hopeDelta: {
+          type: "number",
+          description: "Change in Hope (PC resource 0-6)",
+        },
+        fearDelta: {
+          type: "number",
+          description: "Change in Fear (GM resource 0-6)",
+        },
+        armorDelta: {
+          type: "number",
+          description: "Change in Armor score",
+        },
+        statusEffect: {
+          type: "string",
+          description:
+            "Optional status effect label (e.g., Vulnerable, Restrained)",
+        },
+      },
+      required: ["actorId"],
+    },
+  },
+  {
+    name: "daggerheart_manage_domain_cards",
+    description:
+      "Add, equip, or vault Daggerheart Domain Cards (Arcana, Blade, Bone, Codex, Grace, Midnight, Sage, Splendor, Valor) on a character actor.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        actorId: { type: "string", description: "Target character actor ID" },
+        name: { type: "string", description: "Domain Card name" },
+        domain: {
+          type: "string",
+          description:
+            "Domain type (Arcana, Blade, Bone, Codex, Grace, Midnight, Sage, Splendor, Valor)",
+        },
+        level: {
+          type: "number",
+          description: "Domain Card required level (1 to 10)",
+        },
+        hopeCost: { type: "number", description: "Hope activation cost" },
+        recallCost: { type: "number", description: "Recall cost" },
+        description: { type: "string", description: "Card feature rules text" },
+        vaulted: {
+          type: "boolean",
+          description: "True if stored in Vault, False if equipped",
+        },
+      },
+      required: ["actorId", "name", "domain"],
+    },
+  },
+  {
+    name: "daggerheart_roll_table",
+    description:
+      "Perform a roll on native Daggerheart RollTables (loot tables, random encounters, environmental hazards).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        tableNameOrId: {
+          type: "string",
+          description: "RollTable name or ID in Foundry world data",
+        },
+      },
+      required: ["tableNameOrId"],
+    },
+  },
+  {
+    name: "daggerheart_manage_scene_environment",
+    description:
+      "Control Daggerheart scene activation, atmospheric lighting/darkness, and GM scene notes.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        sceneNameOrId: {
+          type: "string",
+          description: "Target Scene name or ID",
+        },
+        activate: { type: "boolean", description: "Activate scene" },
+        darkness: {
+          type: "number",
+          description: "Atmospheric darkness level (0.0 to 1.0)",
+        },
+        noteTitle: { type: "string", description: "GM scene note title" },
+        noteContent: { type: "string", description: "GM scene note content" },
+      },
+      required: ["sceneNameOrId"],
+    },
+  },
+];
+
+/**
  * Get all tool definitions combined
  */
 export function getAllTools() {
@@ -993,6 +1286,7 @@ export function getAllTools() {
     ...worldMutationTools,
     ...generationTools,
     ...diagnosticsTools,
+    ...daggerheartTools,
   ];
 }
 

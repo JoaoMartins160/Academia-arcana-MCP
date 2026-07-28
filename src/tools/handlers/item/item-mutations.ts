@@ -203,3 +203,36 @@ _Canonical target: Daggerheart item schema._`,
     };
   });
 }
+
+/**
+ * Handles deleting a standalone world item.
+ */
+export async function handleDeleteItem(
+  args: {
+    itemId: string;
+  },
+  foundryClient: FoundryClient,
+) {
+  const { itemId } = args;
+
+  if (!itemId || typeof itemId !== "string") {
+    throw new McpError(
+      ErrorCode.InvalidParams,
+      "itemId is required and must be a string",
+    );
+  }
+
+  return withToolError("delete world item", async () => {
+    await foundryClient.deleteItem(itemId);
+
+    return {
+      content: [
+        {
+          type: "text",
+          text: `🗑️ **World Item Deleted**
+**Item ID:** ${itemId}`,
+        },
+      ],
+    };
+  });
+}
